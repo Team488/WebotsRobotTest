@@ -1,0 +1,5 @@
+{
+    "java.configuration.updateBuildConfiguration": "automatic",
+    "coverage-gutters.coverageReportFileName": "**/jacoco/**/html/index.html",
+    "coverage-gutters.xmlname": "**/jacocoTestReport.xml"
+}
