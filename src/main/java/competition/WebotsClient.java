@@ -14,10 +14,10 @@ import java.net.SocketException;
 import java.net.URI;
 import java.net.UnknownHostException;
 import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.net.http.HttpClient.Version;
+import java.net.http.HttpRequest;
 import java.net.http.HttpRequest.BodyPublishers;
+import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
 import java.util.ArrayList;
 import java.util.List;
@@ -63,13 +63,10 @@ public class WebotsClient {
             input = socket.getInputStream();
             reader = new BufferedReader(new InputStreamReader(input));
         } catch (SocketException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (UnknownHostException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
@@ -97,10 +94,8 @@ public class WebotsClient {
         try {
             response = client.send(request, BodyHandlers.ofString());
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
