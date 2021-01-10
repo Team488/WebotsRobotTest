@@ -30,7 +30,7 @@ public class Robot extends BaseRobot {
         if (BaseRobot.isReal()) {
             this.injectionModule = new CompetitionModule(true);
         } else {
-            this.injectionModule = new SimulationModule();
+            this.injectionModule = new TemplateSimulationModule();
         }
     }
 
