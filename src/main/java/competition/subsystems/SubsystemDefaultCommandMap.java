@@ -4,7 +4,6 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 import competition.subsystems.drive.DriveSubsystem;
-import competition.subsystems.drive.commands.SpinCommand;
 import competition.subsystems.drive.commands.TankDriveWithJoysticksCommand;
 
 @Singleton
