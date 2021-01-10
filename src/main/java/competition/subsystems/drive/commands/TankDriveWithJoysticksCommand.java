@@ -10,7 +10,6 @@ public class TankDriveWithJoysticksCommand extends BaseCommand {
 
     final DriveSubsystem driveSubsystem;
     final OperatorInterface oi;
-    int i;
 
     @Inject
     public TankDriveWithJoysticksCommand(OperatorInterface oi, DriveSubsystem driveSubsystem) {
@@ -26,10 +25,6 @@ public class TankDriveWithJoysticksCommand extends BaseCommand {
 
     @Override
     public void execute() {
-        i++;
-        if (i % 25 == 0) {
-            log.info("L:"+oi.gamepad.getLeftVector().y+",R:"+oi.gamepad.getRightVector().y);
-        }
         driveSubsystem.tankDrive(
             oi.gamepad.getLeftVector().y, 
             oi.gamepad.getRightVector().y);
