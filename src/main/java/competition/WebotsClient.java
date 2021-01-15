@@ -27,46 +27,26 @@ import org.json.JSONObject;
 import xbot.common.controls.actuators.mock_adapters.MockCANTalon;
 
 public class WebotsClient {
-    String hostname = "localhost";
-    InetAddress address;
-    int supervisorPort = 10001;
+    final String hostname = "localhost";
+    final int supervisorPort = 10001;
     int robotPort = -1;
-    byte[] buf;
-    Socket socket;
-    OutputStream output;
-    InputStream input;
-    PrintWriter writer;
-    BufferedReader reader;
 
     HttpClient client = HttpClient.newBuilder().version(Version.HTTP_1_1).build();
 
     public void initialize() {
         // Spawn a robot in the sim
-
+        JSONObject data = new JSONObject();
+        data.put("template", "HttpRobotTemplate");
+        
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://127.0.0.1:" + supervisorPort + "/robot"))
+                .header("Content-Type", "application/json").POST(BodyPublishers.ofString(data.toString())).build();
+        HttpResponse<String> response;
         try {
-            DatagramSocket udpSocket = new DatagramSocket();
-            address = InetAddress.getByName(hostname);
-            String msg = "spawn HttpRobotTemplate";
-            buf = msg.getBytes();
-            DatagramPacket packet = new DatagramPacket(buf, buf.length, address, supervisorPort);
-            udpSocket.send(packet);
-
-            packet = new DatagramPacket(buf, buf.length);
-            udpSocket.receive(packet);
-            String received = new String(packet.getData(), 0, packet.getLength());
-            robotPort = Integer.parseInt(received);
-            udpSocket.close();
-
-            socket = new Socket(address, robotPort);
-            output = socket.getOutputStream();
-            writer = new PrintWriter(output, true);
-            input = socket.getInputStream();
-            reader = new BufferedReader(new InputStreamReader(input));
-        } catch (SocketException e) {
-            e.printStackTrace();
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
+            response = client.send(request, BodyHandlers.ofString());
+            robotPort = Integer.parseInt(response.body());
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
