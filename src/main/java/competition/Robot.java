@@ -4,18 +4,22 @@ package competition;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONObject;
+
 import competition.operator_interface.OperatorCommandMap;
 import competition.subsystems.SubsystemDefaultCommandMap;
 import edu.wpi.first.hal.sim.DriverStationSim;
 import xbot.common.command.BaseRobot;
 import xbot.common.controls.actuators.mock_adapters.MockCANTalon;
 import xbot.common.injection.wpi_factories.DevicePolice;
+import xbot.common.simulation.SimulationPayloadDistributor;
 
 public class Robot extends BaseRobot {
 
     DriverStationSim dsSim;
     WebotsClient webots;
     DevicePolice devicePolice;
+    SimulationPayloadDistributor distributor;
 
     @Override
     protected void initializeSystems() {
@@ -23,6 +27,7 @@ public class Robot extends BaseRobot {
         this.injector.getInstance(SubsystemDefaultCommandMap.class);
         this.injector.getInstance(OperatorCommandMap.class);
         this.devicePolice = this.injector.getInstance(DevicePolice.class);
+        this.distributor = this.injector.getInstance(SimulationPayloadDistributor.class);
     }
 
     @Override
@@ -52,12 +57,14 @@ public class Robot extends BaseRobot {
 
         // find all CANTalons
         List<MockCANTalon> talons = new ArrayList<MockCANTalon>();        
-        for (Object o : devicePolice.registeredDevices.values()) {
+        for (Object o : devicePolice.registeredChannels.values()) {
             if(o instanceof MockCANTalon) {
                 talons.add((MockCANTalon)o);
             }
         }
 
-        webots.sendMotors(talons);
+        JSONObject response = webots.sendMotors(talons);
+
+        distributor.distributeSimulationPayload(response);
     }
 }

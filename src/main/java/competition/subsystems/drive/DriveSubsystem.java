@@ -7,6 +7,8 @@ import org.apache.log4j.Logger;
 
 import xbot.common.command.BaseSubsystem;
 import xbot.common.controls.actuators.XCANTalon;
+import xbot.common.controls.sensors.XAnalogDistanceSensor;
+import xbot.common.controls.sensors.XAnalogDistanceSensor.VoltageMaps;
 import xbot.common.injection.wpi_factories.CommonLibFactory;
 import xbot.common.properties.XPropertyManager;
 
@@ -19,6 +21,11 @@ public class DriveSubsystem extends BaseSubsystem {
     public final XCANTalon rightMaster;
     public final XCANTalon rightFollower;
 
+    public final XAnalogDistanceSensor distanceSensor;
+    public final XAnalogDistanceSensor distanceSensor2;
+
+    int i;
+
     @Inject
     public DriveSubsystem(CommonLibFactory factory, XPropertyManager propManager) {
         log.info("Creating DriveSubsystem");
@@ -27,6 +34,9 @@ public class DriveSubsystem extends BaseSubsystem {
         this.leftFollower = factory.createCANTalon(3);
         this.rightMaster = factory.createCANTalon(2);
         this.rightFollower = factory.createCANTalon(4);
+
+        this.distanceSensor = factory.createAnalogDistanceSensor(1, VoltageMaps::sharp0A51SK);
+        this.distanceSensor2 = factory.createAnalogDistanceSensor(2, VoltageMaps::sharp0A51SK);
 
         XCANTalon.configureMotorTeam("LeftDrive", "LeftMaster", leftMaster, leftFollower, 
         true, true, false);
@@ -37,5 +47,11 @@ public class DriveSubsystem extends BaseSubsystem {
     public void tankDrive(double leftPower, double rightPower) {
         this.leftMaster.simpleSet(leftPower);
         this.rightMaster.simpleSet(rightPower);
+
+        i++;
+        if (i % 25 == 0) {
+            System.out.println("Distance1:" + distanceSensor.getDistance());
+            System.out.println("Distance2:" + distanceSensor2.getDistance());
+        }
     }
 }
