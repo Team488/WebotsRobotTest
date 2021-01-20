@@ -59,7 +59,7 @@ public class WebotsClient {
         return result;
     }
 
-    public void sendMotors(List<MockCANTalon> motors) {
+    public JSONObject sendMotors(List<MockCANTalon> motors) {
         JSONObject data = new JSONObject();
         List<JSONObject> motorValues = new ArrayList<JSONObject>();
 
@@ -78,13 +78,14 @@ public class WebotsClient {
                 // parse response for sensor values
                 JSONObject responseData = new JSONObject(response.body());
                 JSONArray sensors = (JSONArray) responseData.get("Sensors");
-
+                return responseData;
             }
         } catch (IOException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        return null;
     }
 
 }
