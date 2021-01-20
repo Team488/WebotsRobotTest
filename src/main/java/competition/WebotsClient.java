@@ -37,7 +37,7 @@ public class WebotsClient {
         // Spawn a robot in the sim
         JSONObject data = new JSONObject();
         data.put("template", "HttpRobotTemplate");
-        
+
         HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://127.0.0.1:" + supervisorPort + "/robot"))
                 .header("Content-Type", "application/json").POST(BodyPublishers.ofString(data.toString())).build();
         HttpResponse<String> response;
@@ -62,8 +62,8 @@ public class WebotsClient {
         JSONObject data = new JSONObject();
         List<JSONObject> motorValues = new ArrayList<JSONObject>();
 
-        for(MockCANTalon motor : motors) {
-            motorValues.add(buildMotorObject("Motor" + motor.deviceId, (float)motor.getThrottlePercent()));
+        for (MockCANTalon motor : motors) {
+            motorValues.add(buildMotorObject("Motor" + motor.deviceId, (float) motor.getThrottlePercent()));
         }
 
         data.put("motors", motorValues);
@@ -73,6 +73,11 @@ public class WebotsClient {
         HttpResponse<String> response;
         try {
             response = client.send(request, BodyHandlers.ofString());
+            if (response.statusCode() == 200) {
+                // parse response for sensor values
+                JSONObject responseData = new JSONObject(response.body());
+                System.out.println(responseData.get("Sensors"));
+            }
         } catch (IOException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
