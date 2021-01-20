@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.json.JSONObject;
+import org.json.JSONArray;
 
 import xbot.common.controls.actuators.mock_adapters.MockCANTalon;
 
@@ -76,7 +77,8 @@ public class WebotsClient {
             if (response.statusCode() == 200) {
                 // parse response for sensor values
                 JSONObject responseData = new JSONObject(response.body());
-                System.out.println(responseData.get("Sensors"));
+                JSONArray sensors = (JSONArray) responseData.get("Sensors");
+
             }
         } catch (IOException e) {
             e.printStackTrace();
