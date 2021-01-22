@@ -1,5 +1,6 @@
 package competition.subsystems.drive;
 
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
@@ -9,6 +10,7 @@ import xbot.common.command.BaseSubsystem;
 import xbot.common.controls.actuators.XCANTalon;
 import xbot.common.controls.sensors.XAnalogDistanceSensor;
 import xbot.common.controls.sensors.XAnalogDistanceSensor.VoltageMaps;
+import xbot.common.injection.electrical_contract.CANTalonInfo;
 import xbot.common.injection.wpi_factories.CommonLibFactory;
 import xbot.common.properties.XPropertyManager;
 
@@ -30,10 +32,10 @@ public class DriveSubsystem extends BaseSubsystem {
     public DriveSubsystem(CommonLibFactory factory, XPropertyManager propManager) {
         log.info("Creating DriveSubsystem");
 
-        this.leftMaster = factory.createCANTalon(1);
-        this.leftFollower = factory.createCANTalon(3);
-        this.rightMaster = factory.createCANTalon(2);
-        this.rightFollower = factory.createCANTalon(4);
+        this.leftMaster = factory.createCANTalon(new CANTalonInfo(1, false, FeedbackDevice.CTRE_MagEncoder_Absolute, false, 1));
+        this.leftFollower = factory.createCANTalon(new CANTalonInfo(3, false, FeedbackDevice.CTRE_MagEncoder_Absolute, false, 1));
+        this.rightMaster = factory.createCANTalon(new CANTalonInfo(2, false, FeedbackDevice.CTRE_MagEncoder_Absolute, false, 1));
+        this.rightFollower = factory.createCANTalon(new CANTalonInfo(4, false, FeedbackDevice.CTRE_MagEncoder_Absolute, false, 1));
 
         this.distanceSensor = factory.createAnalogDistanceSensor(1, VoltageMaps::sharp0A51SK);
         this.distanceSensor2 = factory.createAnalogDistanceSensor(2, VoltageMaps::sharp0A51SK);
@@ -50,8 +52,8 @@ public class DriveSubsystem extends BaseSubsystem {
 
         i++;
         if (i % 25 == 0) {
-            System.out.println("Distance1:" + distanceSensor.getDistance());
-            System.out.println("Distance2:" + distanceSensor2.getDistance());
+            System.out.println("LeftPower:" + leftPower);
+            System.out.println("RightPower:" + rightPower);
         }
     }
 }
