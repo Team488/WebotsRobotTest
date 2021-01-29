@@ -22,9 +22,11 @@ public class DriveSubsystem extends BaseDriveSubsystem {
     private static Logger log = Logger.getLogger(DriveSubsystem.class);
 
     public final XCANTalon leftLeader;
-    public final XCANTalon leftFollower;
+    public final XCANTalon leftFollower1;
+    public final XCANTalon leftFollower2;
     public final XCANTalon rightLeader;
-    public final XCANTalon rightFollower;
+    public final XCANTalon rightFollower1;
+    public final XCANTalon rightFollower2;
 
     public final XAnalogDistanceSensor distanceSensor;
     public final XAnalogDistanceSensor distanceSensor2;
@@ -37,13 +39,17 @@ public class DriveSubsystem extends BaseDriveSubsystem {
 
         this.leftLeader = factory
                 .createCANTalon(new CANTalonInfo(1, true, FeedbackDevice.CTRE_MagEncoder_Absolute, true, 1));
-        this.leftFollower = factory
+        this.leftFollower1 = factory
                 .createCANTalon(new CANTalonInfo(3, true, FeedbackDevice.CTRE_MagEncoder_Absolute, true, 1));
+        this.leftFollower2= factory
+                .createCANTalon(new CANTalonInfo(5, true, FeedbackDevice.CTRE_MagEncoder_Absolute, true, 1));
         
         this.rightLeader = factory
                 .createCANTalon(new CANTalonInfo(2, true, FeedbackDevice.CTRE_MagEncoder_Absolute, true, 1));
-        this.rightFollower = factory
+        this.rightFollower1 = factory
                 .createCANTalon(new CANTalonInfo(4, true, FeedbackDevice.CTRE_MagEncoder_Absolute, true, 1));
+        this.rightFollower2 = factory
+                .createCANTalon(new CANTalonInfo(6, true, FeedbackDevice.CTRE_MagEncoder_Absolute, true, 1));
 
         leftLeader.createTelemetryProperties(this.getPrefix(), "LeftLeader");
         rightLeader.createTelemetryProperties(this.getPrefix(), "RightLeader");
@@ -51,8 +57,8 @@ public class DriveSubsystem extends BaseDriveSubsystem {
         this.distanceSensor = factory.createAnalogDistanceSensor(1, VoltageMaps::sharp0A51SK);
         this.distanceSensor2 = factory.createAnalogDistanceSensor(2, VoltageMaps::sharp0A51SK);
 
-        XCANTalon.configureMotorTeam("LeftDrive", "LeftLeader", leftLeader, leftFollower, true, true, true);
-        XCANTalon.configureMotorTeam("RightDrive", "RightLeader", rightLeader, rightFollower, true, true, true);
+        XCANTalon.configureMotorTeam("LeftDrive", "LeftLeader", leftLeader, leftFollower1, leftFollower2, true, true, true, true);
+        XCANTalon.configureMotorTeam("RightDrive", "RightLeader", rightLeader, rightFollower1, rightFollower2, true, true, true, true);
 
         this.register();
     }
