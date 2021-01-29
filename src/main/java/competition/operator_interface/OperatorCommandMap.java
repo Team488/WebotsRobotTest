@@ -3,6 +3,7 @@ package competition.operator_interface;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
+import competition.simulation.ResetPositionCommand;
 import xbot.common.subsystems.pose.commands.SetRobotHeadingCommand;
 
 /**
@@ -19,5 +20,13 @@ public class OperatorCommandMap {
     {
         resetHeading.setHeadingToApply(90);
         operatorInterface.gamepad.getifAvailable(1).whenPressed(resetHeading);
+    }
+
+    @Inject
+    public void setupSimulationCommands(
+        OperatorInterface operatorInterface,
+        ResetPositionCommand resetPositionCommand
+    ) {
+        operatorInterface.gamepad.getifAvailable(2).whenPressed(resetPositionCommand);
     }
 }
