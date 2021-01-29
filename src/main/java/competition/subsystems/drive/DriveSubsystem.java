@@ -30,20 +30,21 @@ public class DriveSubsystem extends BaseDriveSubsystem {
     public final XAnalogDistanceSensor distanceSensor2;
 
     int i;
+    private final double simulatedEncoderFactor = 256.0 / Math.PI;
 
     @Inject
     public DriveSubsystem(CommonLibFactory factory, XPropertyManager propManager) {
         log.info("Creating DriveSubsystem");
 
         this.leftLeader = factory
-                .createCANTalon(new CANTalonInfo(1, true, FeedbackDevice.CTRE_MagEncoder_Absolute, true, 1));
+                .createCANTalon(new CANTalonInfo(1, true, FeedbackDevice.CTRE_MagEncoder_Absolute, true, simulatedEncoderFactor));
         this.leftFollower = factory
-                .createCANTalon(new CANTalonInfo(3, true, FeedbackDevice.CTRE_MagEncoder_Absolute, true, 1));
+                .createCANTalon(new CANTalonInfo(3, true, FeedbackDevice.CTRE_MagEncoder_Absolute, true, simulatedEncoderFactor));
         
         this.rightLeader = factory
-                .createCANTalon(new CANTalonInfo(2, true, FeedbackDevice.CTRE_MagEncoder_Absolute, true, 1));
+                .createCANTalon(new CANTalonInfo(2, true, FeedbackDevice.CTRE_MagEncoder_Absolute, true, simulatedEncoderFactor));
         this.rightFollower = factory
-                .createCANTalon(new CANTalonInfo(4, true, FeedbackDevice.CTRE_MagEncoder_Absolute, true, 1));
+                .createCANTalon(new CANTalonInfo(4, true, FeedbackDevice.CTRE_MagEncoder_Absolute, true, simulatedEncoderFactor));
 
         leftLeader.createTelemetryProperties(this.getPrefix(), "LeftLeader");
         rightLeader.createTelemetryProperties(this.getPrefix(), "RightLeader");
