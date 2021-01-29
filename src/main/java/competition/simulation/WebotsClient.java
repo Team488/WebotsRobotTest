@@ -1,18 +1,7 @@
-package competition;
+package competition.simulation;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.PrintWriter;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.net.Socket;
-import java.net.SocketException;
 import java.net.URI;
-import java.net.UnknownHostException;
 import java.net.http.HttpClient;
 import java.net.http.HttpClient.Version;
 import java.net.http.HttpRequest;
@@ -22,11 +11,14 @@ import java.net.http.HttpResponse.BodyHandlers;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.inject.Singleton;
+
 import org.json.JSONObject;
 import org.json.JSONArray;
 
 import xbot.common.controls.actuators.mock_adapters.MockCANTalon;
 
+@Singleton
 public class WebotsClient {
     final String hostname = "localhost";
     final int supervisorPort = 10001;
@@ -86,6 +78,24 @@ public class WebotsClient {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public void resetPosition() {
+        JSONObject data = new JSONObject();
+        // TODO: Support passing in position and or rotation here
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://127.0.0.1:" + robotPort + "/position"))
+                .header("Content-Type", "application/json").PUT(BodyPublishers.ofString(data.toString())).build();
+        HttpResponse<String> response;
+        try {
+            response = client.send(request, BodyHandlers.ofString());
+            if (response.statusCode() == 200) {
+                JSONObject responseData = new JSONObject(response.body());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
 }
