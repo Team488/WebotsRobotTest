@@ -7,6 +7,7 @@ import java.util.List;
 import org.json.JSONObject;
 
 import competition.operator_interface.OperatorCommandMap;
+import competition.simulation.WebotsClient;
 import competition.subsystems.SubsystemDefaultCommandMap;
 import edu.wpi.first.hal.sim.DriverStationSim;
 import xbot.common.command.BaseRobot;
@@ -45,7 +46,7 @@ public class Robot extends BaseRobot {
         dsSim = new DriverStationSim();
         dsSim.setEnabled(true);
 
-        webots = new WebotsClient();
+        webots = this.injector.getInstance(WebotsClient.class);
         webots.initialize();
         
     }
