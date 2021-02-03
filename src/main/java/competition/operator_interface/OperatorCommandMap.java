@@ -28,5 +28,6 @@ public class OperatorCommandMap {
         ResetPositionCommand resetPositionCommand
     ) {
         operatorInterface.gamepad.getifAvailable(2).whenPressed(resetPositionCommand);
+        resetPositionCommand.includeOnSmartDashboard();
     }
 }
