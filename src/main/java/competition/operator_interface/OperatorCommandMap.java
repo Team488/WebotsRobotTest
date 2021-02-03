@@ -36,5 +36,6 @@ public class OperatorCommandMap {
 
         operatorInterface.gamepad.getifAvailable(2).whenPressed(resetToCenter);
         operatorInterface.gamepad.getifAvailable(3).whenPressed(resetToStartOfSlalom);
+        resetPositionCommand.includeOnSmartDashboard();
     }
 }
