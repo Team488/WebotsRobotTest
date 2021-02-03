@@ -4,6 +4,9 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 import competition.simulation.ResetPositionCommand;
+import xbot.common.math.ContiguousHeading;
+import xbot.common.math.FieldPose;
+import xbot.common.math.XYPair;
 import xbot.common.subsystems.pose.commands.SetRobotHeadingCommand;
 
 /**
@@ -25,8 +28,13 @@ public class OperatorCommandMap {
     @Inject
     public void setupSimulationCommands(
         OperatorInterface operatorInterface,
-        ResetPositionCommand resetPositionCommand
+        ResetPositionCommand resetToCenter,
+        ResetPositionCommand resetToStartOfSlalom
     ) {
-        operatorInterface.gamepad.getifAvailable(2).whenPressed(resetPositionCommand);
+        FieldPose slalomStart = new FieldPose(new XYPair(1.4, -3.5), new ContiguousHeading(0)); 
+        resetToStartOfSlalom.setTargetPose(slalomStart);
+
+        operatorInterface.gamepad.getifAvailable(2).whenPressed(resetToCenter);
+        operatorInterface.gamepad.getifAvailable(3).whenPressed(resetToStartOfSlalom);
     }
 }
