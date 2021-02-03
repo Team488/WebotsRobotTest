@@ -81,7 +81,17 @@ public class WebotsClient {
     }
 
     public void resetPosition() {
+        resetPosition(0, 0, 0);
+    }
+
+    public void resetPosition(double x, double y, double rotationInDegrees) {
+        
+        JSONArray positionArray = new JSONArray(new double[] {x, y, 0.1});
+        JSONArray rotationArray = new JSONArray(new double[] {0, 0, 1, Math.toRadians(rotationInDegrees)});
+
         JSONObject data = new JSONObject();
+        data.put("position", positionArray);
+        data.put("rotation", rotationArray);
         // TODO: Support passing in position and or rotation here
         HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://127.0.0.1:" + robotPort + "/position"))
                 .header("Content-Type", "application/json").PUT(BodyPublishers.ofString(data.toString())).build();
