@@ -52,14 +52,11 @@ public class DriveSubsystem extends BaseDriveSubsystem {
         this.rightFollower2 = factory
                 .createCANTalon(new CANTalonInfo(6, true, FeedbackDevice.CTRE_MagEncoder_Absolute, true, simulatedEncoderFactor));
 
-        leftLeader.createTelemetryProperties(this.getPrefix(), "LeftLeader");
-        rightLeader.createTelemetryProperties(this.getPrefix(), "RightLeader");
-
         this.distanceSensor = factory.createAnalogDistanceSensor(1, VoltageMaps::sharp0A51SK);
         this.distanceSensor2 = factory.createAnalogDistanceSensor(2, VoltageMaps::sharp0A51SK);
 
-        XCANTalon.configureMotorTeam("LeftDrive", "LeftLeader", leftLeader, leftFollower1, leftFollower2, true, true, true, true);
-        XCANTalon.configureMotorTeam("RightDrive", "RightLeader", rightLeader, rightFollower1, rightFollower2, true, true, true, true);
+        XCANTalon.configureMotorTeam(this.getPrefix(), "LeftLeader", leftLeader, leftFollower1, leftFollower2, true, true, true, true);
+        XCANTalon.configureMotorTeam(this.getPrefix(), "RightLeader", rightLeader, rightFollower1, rightFollower2, true, true, true, true);
 
         this.register();
     }
