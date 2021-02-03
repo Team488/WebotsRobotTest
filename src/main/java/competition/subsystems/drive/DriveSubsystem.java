@@ -32,33 +32,31 @@ public class DriveSubsystem extends BaseDriveSubsystem {
     public final XAnalogDistanceSensor distanceSensor2;
 
     int i;
+    private final double simulatedEncoderFactor = 256.0 / Math.PI;
 
     @Inject
     public DriveSubsystem(CommonLibFactory factory, XPropertyManager propManager) {
         log.info("Creating DriveSubsystem");
 
         this.leftLeader = factory
-                .createCANTalon(new CANTalonInfo(1, true, FeedbackDevice.CTRE_MagEncoder_Absolute, true, 1));
+                .createCANTalon(new CANTalonInfo(1, true, FeedbackDevice.CTRE_MagEncoder_Absolute, true, simulatedEncoderFactor));
         this.leftFollower1 = factory
-                .createCANTalon(new CANTalonInfo(3, true, FeedbackDevice.CTRE_MagEncoder_Absolute, true, 1));
+                .createCANTalon(new CANTalonInfo(3, true, FeedbackDevice.CTRE_MagEncoder_Absolute, true, simulatedEncoderFactor));
         this.leftFollower2= factory
-                .createCANTalon(new CANTalonInfo(5, true, FeedbackDevice.CTRE_MagEncoder_Absolute, true, 1));
+                .createCANTalon(new CANTalonInfo(5, true, FeedbackDevice.CTRE_MagEncoder_Absolute, true, simulatedEncoderFactor));
         
         this.rightLeader = factory
-                .createCANTalon(new CANTalonInfo(2, true, FeedbackDevice.CTRE_MagEncoder_Absolute, true, 1));
+                .createCANTalon(new CANTalonInfo(2, true, FeedbackDevice.CTRE_MagEncoder_Absolute, true, simulatedEncoderFactor));
         this.rightFollower1 = factory
-                .createCANTalon(new CANTalonInfo(4, true, FeedbackDevice.CTRE_MagEncoder_Absolute, true, 1));
+                .createCANTalon(new CANTalonInfo(4, true, FeedbackDevice.CTRE_MagEncoder_Absolute, true, simulatedEncoderFactor));
         this.rightFollower2 = factory
-                .createCANTalon(new CANTalonInfo(6, true, FeedbackDevice.CTRE_MagEncoder_Absolute, true, 1));
-
-        leftLeader.createTelemetryProperties(this.getPrefix(), "LeftLeader");
-        rightLeader.createTelemetryProperties(this.getPrefix(), "RightLeader");
+                .createCANTalon(new CANTalonInfo(6, true, FeedbackDevice.CTRE_MagEncoder_Absolute, true, simulatedEncoderFactor));
 
         this.distanceSensor = factory.createAnalogDistanceSensor(1, VoltageMaps::sharp0A51SK);
         this.distanceSensor2 = factory.createAnalogDistanceSensor(2, VoltageMaps::sharp0A51SK);
 
-        XCANTalon.configureMotorTeam("LeftDrive", "LeftLeader", leftLeader, leftFollower1, leftFollower2, true, true, true, true);
-        XCANTalon.configureMotorTeam("RightDrive", "RightLeader", rightLeader, rightFollower1, rightFollower2, true, true, true, true);
+        XCANTalon.configureMotorTeam(this.getPrefix(), "LeftLeader", leftLeader, leftFollower1, leftFollower2, true, true, true, true);
+        XCANTalon.configureMotorTeam(this.getPrefix(), "RightLeader", rightLeader, rightFollower1, rightFollower2, true, true, true, true);
 
         this.register();
     }
