@@ -20,7 +20,7 @@ import xbot.common.controls.actuators.mock_adapters.MockCANTalon;
 
 @Singleton
 public class WebotsClient {
-    final String hostname = "localhost";
+    final String hostname = "127.0.0.1";
     final int supervisorPort = 10001;
     int robotPort = -1;
 
