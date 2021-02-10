@@ -34,6 +34,7 @@ public class WebotsClient {
 
     @Inject
     public WebotsClient(PropertyFactory propertyFactory) {
+        propertyFactory.setPrefix("Webots");
         simulatorPoseX = propertyFactory.createEphemeralProperty("Simulator Pose X", 0);
         simulatorPoseY = propertyFactory.createEphemeralProperty("Simulator Pose Y", 0);
         simulatorPoseYaw = propertyFactory.createEphemeralProperty("Simulator Pose Yaw", 0);
