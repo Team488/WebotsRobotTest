@@ -11,20 +11,33 @@ import java.net.http.HttpResponse.BodyHandlers;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 import org.json.JSONObject;
 import org.json.JSONArray;
 
 import xbot.common.controls.actuators.mock_adapters.MockCANTalon;
+import xbot.common.properties.DoubleProperty;
+import xbot.common.properties.PropertyFactory;
 
 @Singleton
 public class WebotsClient {
+    final DoubleProperty simulatorPoseX;
+    final DoubleProperty simulatorPoseY;
+    final DoubleProperty simulatorPoseYaw;
     final String hostname = "localhost";
     final int supervisorPort = 10001;
     int robotPort = -1;
 
     HttpClient client = HttpClient.newBuilder().version(Version.HTTP_1_1).build();
+
+    @Inject
+    public WebotsClient(PropertyFactory propertyFactory) {
+        simulatorPoseX = propertyFactory.createEphemeralProperty("Simulator Pose X", 0);
+        simulatorPoseY = propertyFactory.createEphemeralProperty("Simulator Pose Y", 0);
+        simulatorPoseYaw = propertyFactory.createEphemeralProperty("Simulator Pose Yaw", 0);
+    }
 
     public void initialize() {
         // Spawn a robot in the sim
@@ -70,6 +83,7 @@ public class WebotsClient {
                 // parse response for sensor values
                 JSONObject responseData = new JSONObject(response.body());
                 JSONArray sensors = (JSONArray) responseData.get("Sensors");
+                handleSimulatorPose((JSONObject)responseData.get("WorldPose"));
                 return responseData;
             }
         } catch (IOException e) {
@@ -78,6 +92,13 @@ public class WebotsClient {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public void handleSimulatorPose(JSONObject worldPose) {
+        JSONArray positionArray = worldPose.getJSONArray("Position");
+        simulatorPoseX.set(positionArray.getDouble(0));
+        simulatorPoseY.set(positionArray.getDouble(1));
+        simulatorPoseYaw.set(worldPose.getDouble("Yaw"));
     }
 
     public void resetPosition() {
