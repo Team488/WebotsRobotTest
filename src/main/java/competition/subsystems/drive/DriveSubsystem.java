@@ -22,11 +22,7 @@ public class DriveSubsystem extends BaseDriveSubsystem {
     private static Logger log = Logger.getLogger(DriveSubsystem.class);
 
     public final XCANTalon leftLeader;
-    public final XCANTalon leftFollower1;
-    public final XCANTalon leftFollower2;
     public final XCANTalon rightLeader;
-    public final XCANTalon rightFollower1;
-    public final XCANTalon rightFollower2;
 
     public final XAnalogDistanceSensor distanceSensor;
     public final XAnalogDistanceSensor distanceSensor2;
@@ -40,23 +36,11 @@ public class DriveSubsystem extends BaseDriveSubsystem {
 
         this.leftLeader = factory
                 .createCANTalon(new CANTalonInfo(1, true, FeedbackDevice.CTRE_MagEncoder_Absolute, true, simulatedEncoderFactor));
-        this.leftFollower1 = factory
-                .createCANTalon(new CANTalonInfo(3, true, FeedbackDevice.CTRE_MagEncoder_Absolute, true, simulatedEncoderFactor));
-        this.leftFollower2= factory
-                .createCANTalon(new CANTalonInfo(5, true, FeedbackDevice.CTRE_MagEncoder_Absolute, true, simulatedEncoderFactor));
-        
         this.rightLeader = factory
                 .createCANTalon(new CANTalonInfo(2, true, FeedbackDevice.CTRE_MagEncoder_Absolute, true, simulatedEncoderFactor));
-        this.rightFollower1 = factory
-                .createCANTalon(new CANTalonInfo(4, true, FeedbackDevice.CTRE_MagEncoder_Absolute, true, simulatedEncoderFactor));
-        this.rightFollower2 = factory
-                .createCANTalon(new CANTalonInfo(6, true, FeedbackDevice.CTRE_MagEncoder_Absolute, true, simulatedEncoderFactor));
 
         this.distanceSensor = factory.createAnalogDistanceSensor(1, VoltageMaps::sharp0A51SK, this.getPrefix());
         this.distanceSensor2 = factory.createAnalogDistanceSensor(2, VoltageMaps::sharp0A51SK, this.getPrefix());
-
-        XCANTalon.configureMotorTeam(this.getPrefix(), "LeftLeader", leftLeader, leftFollower1, leftFollower2, true, true, true, true);
-        XCANTalon.configureMotorTeam(this.getPrefix(), "RightLeader", rightLeader, rightFollower1, rightFollower2, true, true, true, true);
 
         this.register();
     }
@@ -87,8 +71,8 @@ public class DriveSubsystem extends BaseDriveSubsystem {
 
     @Override
     public void move(XYPair translate, double rotate) {
-        double left = translate.y - rotate;
-        double right = translate.y + rotate;
+        double left = translate.y + rotate;
+        double right = translate.y - rotate;
 
         this.leftLeader.simpleSet(left);
         this.rightLeader.simpleSet(right);
