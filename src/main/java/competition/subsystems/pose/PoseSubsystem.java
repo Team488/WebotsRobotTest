@@ -17,7 +17,7 @@ public class PoseSubsystem extends BasePoseSubsystem {
     // this means each revolution would move the robot (if not slipping at all) 6*pi inches. 
     // So, one tick would move us (6*pi)/256 inches
     // Conversely, we can 
-    private double scalingFactorFromTicksToInches = 6.0 * Math.PI / 256.0;
+    private double scalingFactorFromTicksToInches = 1.0 / 256.0; // The encoders are already reporting 256 ticks per inch, so if we divide by ticks we will get inches.
 
     @Inject
     public PoseSubsystem(CommonLibFactory clf, PropertyFactory propManager, DriveSubsystem drive) {
