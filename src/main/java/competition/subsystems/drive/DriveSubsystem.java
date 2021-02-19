@@ -28,7 +28,7 @@ public class DriveSubsystem extends BaseDriveSubsystem {
     public final XAnalogDistanceSensor distanceSensor2;
 
     int i;
-    private final double simulatedEncoderFactor = 256.0 / Math.PI;
+    private final double simulatedEncoderFactor = 256.0 * 39.3701; //256 "ticks" per meter, and ~39 inches in a meter
 
     @Inject
     public DriveSubsystem(CommonLibFactory factory, XPropertyManager propManager) {
@@ -41,6 +41,9 @@ public class DriveSubsystem extends BaseDriveSubsystem {
 
         this.distanceSensor = factory.createAnalogDistanceSensor(1, VoltageMaps::sharp0A51SK, this.getPrefix());
         this.distanceSensor2 = factory.createAnalogDistanceSensor(2, VoltageMaps::sharp0A51SK, this.getPrefix());
+
+        leftLeader.createTelemetryProperties(this.getPrefix(), "LeftLeader");
+        rightLeader.createTelemetryProperties(this.getPrefix(), "RightLeader");
 
         this.register();
     }
@@ -71,8 +74,8 @@ public class DriveSubsystem extends BaseDriveSubsystem {
 
     @Override
     public void move(XYPair translate, double rotate) {
-        double left = translate.y + rotate;
-        double right = translate.y - rotate;
+        double left = translate.y - rotate;
+        double right = translate.y + rotate;
 
         this.leftLeader.simpleSet(left);
         this.rightLeader.simpleSet(right);
