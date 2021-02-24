@@ -3,8 +3,11 @@ package competition.subsystems;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
+import competition.commandgroups.SlalomPathCommand;
 import competition.subsystems.drive.DriveSubsystem;
 import competition.subsystems.drive.commands.ArcadeDriveCommand;
+import competition.subsystems.drive.commands.DriveForwardCommand;
+import competition.subsystems.drive.commands.TurnToAngleCommand;
 
 @Singleton
 public class SubsystemDefaultCommandMap {

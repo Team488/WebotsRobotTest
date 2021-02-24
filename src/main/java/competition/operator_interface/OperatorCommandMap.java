@@ -3,7 +3,9 @@ package competition.operator_interface;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
+import competition.commandgroups.SlalomPathCommand;
 import competition.simulation.ResetPositionCommand;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import xbot.common.math.ContiguousHeading;
 import xbot.common.math.FieldPose;
 import xbot.common.math.XYPair;
@@ -19,10 +21,21 @@ public class OperatorCommandMap {
     @Inject
     public void setupMyCommands(
             OperatorInterface operatorInterface,
-            SetRobotHeadingCommand resetHeading)
+            SetRobotHeadingCommand resetHeading, 
+            ResetPositionCommand setSlalomPositionCommand,
+            SlalomPathCommand slalomPathCommand)
     {
         resetHeading.setHeadingToApply(90);
         operatorInterface.gamepad.getifAvailable(1).whenPressed(resetHeading);
+
+
+        FieldPose slalomStart = new FieldPose(new XYPair(1.4, -3.5), new ContiguousHeading(0)); 
+        setSlalomPositionCommand.setTargetPose(slalomStart);
+        setSlalomPositionCommand.includeOnSmartDashboard("Set Slalom Command");
+
+        SmartDashboard.putData(slalomPathCommand);
+
+ 
     }
 
     @Inject

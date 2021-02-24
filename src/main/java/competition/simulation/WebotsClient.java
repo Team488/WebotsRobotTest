@@ -121,7 +121,6 @@ public class WebotsClient {
         try {
             response = client.send(request, BodyHandlers.ofString());
             if (response.statusCode() == 200) {
-                JSONObject responseData = new JSONObject(response.body());
             }
         } catch (IOException e) {
             e.printStackTrace();
