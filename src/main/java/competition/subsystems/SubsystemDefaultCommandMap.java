@@ -5,6 +5,8 @@ import com.google.inject.Singleton;
 
 import competition.subsystems.drive.DriveSubsystem;
 import competition.subsystems.drive.commands.ArcadeDriveCommand;
+import competition.subsystems.drive.commands.DriveDistanceCommand;
+import competition.subsystems.drive.commands.SlalomPathAutonomousCommand;
 
 @Singleton
 public class SubsystemDefaultCommandMap {
