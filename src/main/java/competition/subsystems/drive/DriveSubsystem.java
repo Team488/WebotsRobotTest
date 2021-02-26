@@ -6,7 +6,6 @@ import com.google.inject.Singleton;
 
 import org.apache.log4j.Logger;
 
-import xbot.common.command.BaseSubsystem;
 import xbot.common.controls.actuators.XCANTalon;
 import xbot.common.controls.sensors.XAnalogDistanceSensor;
 import xbot.common.controls.sensors.XAnalogDistanceSensor.VoltageMaps;
