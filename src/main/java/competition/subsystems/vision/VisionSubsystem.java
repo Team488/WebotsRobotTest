@@ -11,23 +11,20 @@ import xbot.common.properties.PropertyFactory;
 @Singleton
 public class VisionSubsystem extends BaseSubsystem {
 
-    private final DoubleProperty markerCountSent;
-    private final DoubleProperty markerCountReceived;
+    private final DoubleProperty markerCount;
 
     @Inject
     public VisionSubsystem(XScheduler scheduler, PropertyFactory pf) {
         log.info("Creating VisionSubsystem");
 
         pf.setPrefix(this);
-        this.markerCountSent = pf.createEphemeralProperty("Marker Count Sent", 0);
-        this.markerCountReceived = pf.createEphemeralProperty("Marker Count Received", 0);
+        this.markerCount = pf.createEphemeralProperty("Marker Count", 0);
 
         scheduler.registerSubsystem(this);
     }
 
     @Override
     public void periodic() {
-        double markerCount = this.markerCountSent.get();
-        this.markerCountReceived.set(markerCount);
+        double markerCount = this.markerCount.get();
     }
 }
