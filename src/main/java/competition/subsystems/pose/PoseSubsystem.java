@@ -5,8 +5,6 @@ import com.google.inject.Singleton;
 
 import competition.subsystems.drive.DriveSubsystem;
 import xbot.common.injection.wpi_factories.CommonLibFactory;
-import xbot.common.math.FieldPose;
-import xbot.common.properties.DoubleProperty;
 import xbot.common.properties.PropertyFactory;
 import xbot.common.simulation.WebotsClient;
 import xbot.common.subsystems.pose.BasePoseSubsystem;
@@ -35,6 +33,10 @@ public class PoseSubsystem extends BasePoseSubsystem {
     @Override
     protected double getRightDriveDistance() {
         return drive.rightLeader.getSelectedSensorPosition(0) * scalingFactorFromTicksToInches;
+    }
+
+    public double totalDriveDistance(){
+        return (getLeftDriveDistance() + getRightDriveDistance())/2;
     }
 
 }

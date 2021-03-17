@@ -5,68 +5,51 @@ import com.google.inject.Inject;
 import xbot.common.command.BaseCommand;
 import competition.subsystems.drive.DriveSubsystem;
 import competition.subsystems.pose.PoseSubsystem;
+import xbot.common.math.PIDFactory;
+import xbot.common.math.PIDManager;
 
 public class DriveToPositionCommand extends BaseCommand {
 
     DriveSubsystem drive;
-    double targetGoal; // target goal
-    double currentPos; // class level variable
-    double speed;
-    double oldPos;
-    PoseSubsystem pose;
-    
+    PoseSubsystem pos;
+    PIDManager pid;
+    double targetGoal;
+  
     @Inject
-    public DriveToPositionCommand(DriveSubsystem driveSubsystem, PoseSubsystem pose) {
+    public DriveToPositionCommand(DriveSubsystem driveSubsystem, PIDFactory pf, PoseSubsystem pos) {
         this.drive = driveSubsystem;
-        this.pose = pose;
+        this.pid = pf.createPIDManager("DriveToPoint");
+        this.pos = pos;
+
+        pid.setEnableErrorThreshold(true); // Turn on distance checking
+        pid.setErrorThreshold(0.1);
+        pid.setEnableDerivativeThreshold(true); // Turn on speed checking
+        pid.setDerivativeThreshold(0.1);
+
+        // manually adjust these values to adjust the action
+        pid.setP(0.2);
+        pid.setD(0.5);
     }
     
     public void setTargetPosition(double position) {
         targetGoal = position; // basically sets the target position and stores it as a value
-        // This method will be called by the test, and will give you a goal distance.
-        // You'll need to remember this target position and use it in your calculations.
     }
     
     @Override
     public void initialize() {
         // If you have some one-time setup, do it here.
+        pid.reset();
     }
 
     @Override
     public void execute() {
-        // Here you'll need to figure out a technique that:
-        // - Gets the robot to move to the target position 
-        // - Hint: use drive.distanceSensor.get() to find out where you are
-        // - Gets the robot stop (or at least be moving really really slowly) at the target position
-        currentPos = drive.getTotalDistanceFromSensors(); //TODO: USE FROM POSE SUBSYSTEM RIGHTLEADER AND LEFT LEADER
-        speed = oldPos - currentPos;
-        
-        double power = 0;
-        if(currentPos > targetGoal){ // makes the blue circle move and tracks the loops it goes through
-            power = -0.3;
-        }
-        else{
-            power = 0.6;
-        }
+        double currentPosition = pos.totalDriveDistance();
+        double power = pid.calculate(targetGoal, currentPosition);
         drive.tankDrive(power, power);
-        // How you do this is up to you. If you get stuck, ask a mentor or student for some hints!
-        
-        oldPos = currentPos; // overrites the position after it moves onto a new pos
     }
     
     @Override
     public boolean isFinished() {
-        boolean nearGoal = Math.abs(currentPos - targetGoal) < 0.1;  // if the difference is less than 0.1, then true
-        boolean movingSlow = Math.abs(speed) < 0.2; // if current speed is < 0.2, then true
-        // the decimal numbers = the velocity/speed
-
-
-        if(nearGoal && movingSlow){ 
-            return true;
-        }
-        /* Modify this to RETURN TRUE once you have met your goal, 
-         and you're moving fairly slowly (ideally stopped) */
-         
-        return false;
+        return pid.isOnTarget();
     }
 }

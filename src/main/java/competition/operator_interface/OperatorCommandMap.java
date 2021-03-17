@@ -3,12 +3,9 @@ package competition.operator_interface;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
-<<<<<<< HEAD
 import competition.subsystems.drive.commands.DriveToPositionCommand;
 import competition.subsystems.drive.commands.TurnLeft90DegreesCommand;
-=======
 import competition.subsystems.pose.PoseSubsystem;
->>>>>>> origin/master
 import xbot.common.math.ContiguousHeading;
 import xbot.common.math.FieldPose;
 import xbot.common.math.XYPair;
@@ -43,7 +40,7 @@ public class OperatorCommandMap {
         resetToStartOfSlalom.setTargetPose(slalomStart);
         resetToCenter.setTargetPose(new FieldPose(80, 150, PoseSubsystem.FACING_AWAY_FROM_DRIVERS));
 
-        operatorInterface.gamepad.getifAvailable(1).whenPressed(drivetoposition);
+        operatorInterface.gamepad.getifAvailable(5).whenPressed(drivetoposition);
         operatorInterface.gamepad.getifAvailable(2).whenPressed(resetToCenter);
         operatorInterface.gamepad.getifAvailable(3).whenPressed(resetToStartOfSlalom);
         operatorInterface.gamepad.getifAvailable(4).whenPressed(turnleft90command);
