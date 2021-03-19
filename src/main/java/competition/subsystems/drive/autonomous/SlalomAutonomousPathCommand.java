@@ -12,22 +12,23 @@ import xbot.common.simulation.ResetSimulatorPositionCommand;
 
 import competition.operator_interface.OperatorInterface;
 import competition.subsystems.drive.DriveSubsystem;
-
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import competition.subsystems.drive.commands.DriveToPositionCommand;
+import competition.subsystems.drive.commands.TurnLeft90DegreesCommand;
+// import edu.wpi.first.wpilibj2.command.InstantCommand;
+// import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
-import xbot.common.command.BaseCommand;
-import xbot.common.command.DelayViaSupplierCommand;
-import xbot.common.command.SimpleWaitForMaintainerCommand;
+// import xbot.common.command.BaseCommand;
+// import xbot.common.command.DelayViaSupplierCommand;
+// import xbot.common.command.SimpleWaitForMaintainerCommand;
 
 
 // add smartdashboard into here
 // along with the autonomous command selectors
 // use .addcommand commands?
 // 'get' commands included (getposition, getpower, etc)
-// use ResetSimulatorPosition and perhaps import turnleft90command to become utilized in here
-// Spin Drive Command?
+// use ResetSimulatorPosition?
+
 
 public class SlalomAutonomousPathCommand extends SequentialCommandGroup {
 
@@ -35,18 +36,7 @@ public class SlalomAutonomousPathCommand extends SequentialCommandGroup {
 
 
     @Inject
-    SlalomAutonomousPathCommand(DriveSubsystem drive, PropertyFactory pf){ //PoseSubsystem pose,
-        
+    SlalomAutonomousPathCommand(DriveSubsystem drive, PropertyFactory pf, TurnLeft90DegreesCommand turnLeft, DriveToPositionCommand drivePoint){ 
+        addCommands(drivePoint, turnLeft);
     }
-    
-    @Override
-    public void initialize(){
-        super.initialize();
-        log.info("Initializing");
-    }
-    
-    @Override
-    public void execute(){
-    }
-
 }
