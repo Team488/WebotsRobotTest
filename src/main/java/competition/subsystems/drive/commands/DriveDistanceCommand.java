@@ -3,7 +3,6 @@ package competition.subsystems.drive.commands;
 import com.google.inject.Inject;
 
 import competition.operator_interface.OperatorInterface;
-import competition.simulation.WebotsClient;
 import competition.subsystems.drive.DriveSubsystem;
 import competition.subsystems.pose.PoseSubsystem;
 import xbot.common.command.BaseCommand;
@@ -32,30 +31,39 @@ public class DriveDistanceCommand extends BaseCommand {
         this.addRequirements(this.driveSubsystem);
         this.pose = pose;
         this.pid = pf.createPIDManager("DriveDistance");
-        //this.distance = distance;5
 
         pid.setEnableErrorThreshold(true); 
-        pid.setErrorThreshold(0.05);
+        pid.setErrorThreshold(0.05); // was 0.05
         pid.setEnableDerivativeThreshold(true);
-        pid.setDerivativeThreshold(0.05);
+        pid.setDerivativeThreshold(0.05); // was 0.05
         
-        pid.setP(.8);
-        pid.setD(.8);
+        pid.setP(.1); // was .8
+        //pid.setD(.1); // was .8
+
     }
 
     @Override
     public void initialize() {
-        this.initialPosition = driveSubsystem.leftLeader.getSelectedSensorPosition(0) * 6.0 * Math.PI / 256.0;
+        this.initialPosition = driveSubsystem.leftLeader.getSelectedSensorPosition(0)/ 256.0;
         pid.reset();
         log.info("Initializing");
     }
 
     @Override
     public void execute() {
-        double currentPosition = driveSubsystem.leftLeader.getSelectedSensorPosition(0) * 6.0 * Math.PI / 256.0;
+        double currentPosition = driveSubsystem.leftLeader.getSelectedSensorPosition(0)  / 256.0;
         double power = pid.calculate(initialPosition+distance,currentPosition);
+        
 
         driveSubsystem.tankDrive(power,power);
+
+        if (i % 10 ==0) {
+            
+            System.out.println("Goal: " + (initialPosition+distance)+  "\nInitial: " + initialPosition+"\nCurrent: "+ currentPosition + " \nDistance: " + ( currentPosition-initialPosition) );
+        
+            System.out.println("Power: "+power +"\n");
+        }
+            i++;
 
         /*if (i % 50 == 0) {
             System.out.println("initial position: "+initialPosition + "\ncurrent position: " + currentPosition);
