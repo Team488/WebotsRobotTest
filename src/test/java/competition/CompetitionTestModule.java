@@ -2,18 +2,11 @@ package competition;
 
 import competition.subsystems.drive.DriveSubsystem;
 import competition.subsystems.pose.PoseSubsystem;
-import xbot.common.injection.SimulatorModule;
+import xbot.common.injection.UnitTestModule;
 import xbot.common.subsystems.drive.BaseDriveSubsystem;
 import xbot.common.subsystems.pose.BasePoseSubsystem;
 
-
-public class TemplateSimulationModule extends SimulatorModule {
-
-    boolean isPractice;
-
-    public TemplateSimulationModule() {
-        this.isPractice = true;
-    }
+public class CompetitionTestModule extends UnitTestModule {
     
     @Override
     protected void configure() {
