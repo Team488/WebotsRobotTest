@@ -1,18 +1,14 @@
 
 package competition;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.json.JSONObject;
-
 import competition.operator_interface.OperatorCommandMap;
 import competition.subsystems.SubsystemDefaultCommandMap;
+import competition.subsystems.pose.PoseSubsystem;
+import competition.subsystems.vision.VisionSubsystem;
 import edu.wpi.first.hal.sim.DriverStationSim;
 import xbot.common.command.BaseRobot;
-import xbot.common.controls.actuators.mock_adapters.MockCANTalon;
-import xbot.common.injection.wpi_factories.DevicePolice;
-import xbot.common.simulation.SimulationPayloadDistributor;
+import xbot.common.math.FieldPose;
+import xbot.common.subsystems.pose.BasePoseSubsystem;
 
 public class Robot extends BaseRobot {
 
@@ -23,6 +19,7 @@ public class Robot extends BaseRobot {
         super.initializeSystems();
         this.injector.getInstance(SubsystemDefaultCommandMap.class);
         this.injector.getInstance(OperatorCommandMap.class);
+        this.injector.getInstance(VisionSubsystem.class);
     }
 
     @Override
@@ -32,5 +29,17 @@ public class Robot extends BaseRobot {
         } else {
             this.injectionModule = new TemplateSimulationModule();
         }
+    }
+
+    @Override
+    public void simulationInit() {
+        super.simulationInit();
+        webots.setFieldPoseOffset(
+            new FieldPose(
+                -2.33*PoseSubsystem.INCHES_IN_A_METER, 
+                -4.58*PoseSubsystem.INCHES_IN_A_METER, 
+                BasePoseSubsystem.FACING_TOWARDS_DRIVERS
+                )
+        );
     }
 }

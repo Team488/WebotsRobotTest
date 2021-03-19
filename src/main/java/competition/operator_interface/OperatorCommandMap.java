@@ -6,6 +6,7 @@ import com.google.inject.Singleton;
 import competition.subsystems.drive.commands.SlalomPathAutonomousCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import xbot.common.command.SmartDashboardCommandPutter;
+import competition.subsystems.pose.PoseSubsystem;
 import xbot.common.math.ContiguousHeading;
 import xbot.common.math.FieldPose;
 import xbot.common.math.XYPair;
@@ -40,8 +41,9 @@ public class OperatorCommandMap {
         ResetSimulatorPositionCommand resetToCenter,
         ResetSimulatorPositionCommand resetToStartOfSlalom
     ) {
-        FieldPose slalomStart = new FieldPose(new XYPair(1.4, -3.5), new ContiguousHeading(0)); 
+        FieldPose slalomStart = new FieldPose(150, 38, PoseSubsystem.FACING_AWAY_FROM_DRIVERS); 
         resetToStartOfSlalom.setTargetPose(slalomStart);
+        resetToCenter.setTargetPose(new FieldPose(80, 150, PoseSubsystem.FACING_AWAY_FROM_DRIVERS));
 
         operatorInterface.gamepad.getifAvailable(2).whenPressed(resetToCenter);
         operatorInterface.gamepad.getifAvailable(3).whenPressed(resetToStartOfSlalom);
