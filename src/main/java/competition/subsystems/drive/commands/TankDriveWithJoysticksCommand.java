@@ -27,14 +27,6 @@ public class TankDriveWithJoysticksCommand extends BaseCommand {
 
     @Override
     public void execute() {
-        driveSubsystem.tankDrive(
-            MathUtils.deadband(oi.gamepad.getLeftVector().y, 0.15), 
-            MathUtils.deadband(oi.gamepad.getRightVector().y, 0.15)
-        );
-/*
-        double y = MathUtils.deadband(oi.gamepad.getLeftVector().y, 0.15);
-        double w = MathUtils.deadband(oi.gamepad.getRightVector().x, 0.15);
-*/
-        //driveSubsystem.drive(new XYPair(0, y), w);
+
     }
 }
