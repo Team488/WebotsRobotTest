@@ -6,11 +6,13 @@ import com.google.inject.Singleton;
 
 import org.apache.log4j.Logger;
 
+import competition.subsystems.drive.commands.DriveSpinCommand;
 import xbot.common.controls.actuators.XCANTalon;
 import xbot.common.controls.sensors.XAnalogDistanceSensor;
 import xbot.common.controls.sensors.XAnalogDistanceSensor.VoltageMaps;
 import xbot.common.injection.electrical_contract.CANTalonInfo;
 import xbot.common.injection.wpi_factories.CommonLibFactory;
+import xbot.common.math.PIDFactory;
 import xbot.common.math.PIDManager;
 import xbot.common.math.XYPair;
 import xbot.common.properties.XPropertyManager;
@@ -25,12 +27,13 @@ public class DriveSubsystem extends BaseDriveSubsystem {
 
     public final XAnalogDistanceSensor distanceSensor;
     public final XAnalogDistanceSensor distanceSensor2;
-
+    PIDManager pidD;
+    PIDManager pidS;
     int i;
     private final double simulatedEncoderFactor = 256.0 * 39.3701; //256 "ticks" per meter, and ~39 inches in a meter
 
     @Inject
-    public DriveSubsystem(CommonLibFactory factory, XPropertyManager propManager) {
+    public DriveSubsystem(CommonLibFactory factory, XPropertyManager propManager,PIDFactory pf) {
         log.info("Creating DriveSubsystem");
 
         this.leftLeader = factory
@@ -45,6 +48,29 @@ public class DriveSubsystem extends BaseDriveSubsystem {
         rightLeader.createTelemetryProperties(this.getPrefix(), "RightLeader");
 
         this.register();
+
+
+        // Creates PID for computing spinning power
+        pidS = pf.createPIDManager("Rotate");
+        pidS.setEnableErrorThreshold(true); 
+        pidS.setErrorThreshold(.1);
+        pidS.setEnableDerivativeThreshold(false);
+        //pidS.setDerivativeThreshold(0.);
+        pidS.setP(0.009); //0.005
+        pidS.setD(0.004);
+
+        // Creates PID for computing foward power
+        pidD = pf.createPIDManager("DriveDistance");
+        pidD.setEnableErrorThreshold(true); 
+        pidD.setErrorThreshold(0.1);
+        pidD.setEnableDerivativeThreshold(false);
+        //pidD.setDerivativeThreshold(0.1);
+        pidD.setP(.005); // 0.005
+        //pidD.setD(.);
+
+        
+
+
     }
 
     public void tankDrive(double leftPower, double rightPower) {    
@@ -58,12 +84,12 @@ public class DriveSubsystem extends BaseDriveSubsystem {
 
     @Override
     public PIDManager getPositionalPid() {
-        return null;
+        return pidD;
     }
 
     @Override
     public PIDManager getRotateToHeadingPid() {
-        return null;
+        return pidS;
     }
 
     @Override

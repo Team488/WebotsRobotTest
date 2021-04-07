@@ -8,10 +8,12 @@ import competition.subsystems.drive.DriveSubsystem;
 import competition.subsystems.pose.PoseSubsystem;
 import xbot.common.command.BaseCommand;
 import xbot.common.injection.wpi_factories.CommonLibFactory;
+import xbot.common.math.FieldPose;
 import xbot.common.math.PIDFactory;
 import xbot.common.math.PIDManager;
 import xbot.common.properties.DoubleProperty;
 import xbot.common.properties.PropertyFactory;
+import xbot.common.subsystems.drive.PurePursuitCommand;
 import xbot.common.subsystems.drive.control_logic.HeadingModule;
 
 
@@ -90,7 +92,7 @@ public class DriveSpinCommand extends BaseCommand {
     public void execute() {
 
         currentPosition = (driveSubsystem.leftLeader.getSelectedSensorPosition(0) +driveSubsystem.leftLeader.getSelectedSensorPosition(0))/ (2*256.0);        
-
+        
         // Gets the forward power (assumes the goal is 4 beyond the actual goal)
         double powerForward = pidD.calculate(initialPosition+distance+4,currentPosition);
 

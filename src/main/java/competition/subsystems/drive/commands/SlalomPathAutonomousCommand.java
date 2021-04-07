@@ -1,30 +1,23 @@
 package competition.subsystems.drive.commands;
 
-import java.util.function.Supplier;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import org.apache.log4j.Logger;
 
-
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import xbot.common.command.DelayViaSupplierCommand;
-import xbot.common.command.SimpleWaitForMaintainerCommand;
-import xbot.common.properties.DoubleProperty;
-import xbot.common.properties.PropertyFactory;
-import xbot.common.simulation.ResetSimulatorPositionCommand;
-import xbot.common.subsystems.drive.ConfigurablePurePursuitCommand;
-import xbot.common.subsystems.drive.PurePursuitCommand;
-import xbot.common.subsystems.drive.RabbitPoint;
-import xbot.common.subsystems.drive.PurePursuitCommand.PointLoadingMode;
-import xbot.common.subsystems.drive.RabbitPoint.PointTerminatingType;
-import xbot.common.subsystems.drive.RabbitPoint.PointType;
 import xbot.common.math.ContiguousHeading;
 import xbot.common.math.FieldPose;
 import xbot.common.math.XYPair;
+import xbot.common.properties.PropertyFactory;
+import xbot.common.simulation.ResetSimulatorPositionCommand;
+import xbot.common.subsystems.drive.ConfigurablePurePursuitCommand;
+import xbot.common.subsystems.drive.PurePursuitCommand.PointLoadingMode;
+import xbot.common.subsystems.drive.RabbitPoint;
+import xbot.common.subsystems.drive.SimulatedPurePursuitCommand;
 
 public class SlalomPathAutonomousCommand extends SequentialCommandGroup {
 
@@ -34,21 +27,35 @@ public class SlalomPathAutonomousCommand extends SequentialCommandGroup {
     @Inject
     SlalomPathAutonomousCommand( ResetSimulatorPositionCommand resetToStartOfSlalom, PropertyFactory pf, 
     Provider<DriveDistanceCommand> driveProvider,Provider<SpinCommand> spinProvider, 
-    Provider<DriveSpinCommand> dsProvider, Provider<ConfigurablePurePursuitCommand> pureProvider)
+    Provider<DriveSpinCommand> dsProvider, Provider<SimulatedPurePursuitCommand> pureProvider)
     {
-        
 
-        FieldPose slalomStart = new FieldPose(new XYPair(1.52, -3.81), new ContiguousHeading(0)); 
+        FieldPose slalomStart = new FieldPose(new XYPair(151.17096216482474, 27.920093774645864), new ContiguousHeading(90)); 
         resetToStartOfSlalom.setTargetPose(slalomStart);
         addCommands(resetToStartOfSlalom);
 
         //normalDrive(driveProvider, spinProvider);
         //advancedDrive(dsProvider);
 
-        ConfigurablePurePursuitCommand pure =pureProvider.get();
+        SimulatedPurePursuitCommand pure =pureProvider.get();
         pure.setMode(PointLoadingMode.Absolute);
-        pure.addPoint(new RabbitPoint(4.52, -3.81,90));
-  
+        
+        List<RabbitPoint> points = new ArrayList<RabbitPoint>();
+        //points.add(new RabbitPoint(149, 38,90));
+        points.add(new RabbitPoint(104, 105,155));
+        points.add(new RabbitPoint(90, 200,90));
+        points.add(new RabbitPoint(122,264,15));
+        points.add(new RabbitPoint(154,292,90));
+        points.add(new RabbitPoint(123,325,180));
+        points.add(new RabbitPoint(94,295,-90));
+        points.add(new RabbitPoint(122,258,-15));
+        points.add(new RabbitPoint(156,152,-90));
+        points.add(new RabbitPoint(124,93,-155));
+        points.add(new RabbitPoint(93,36,-90));
+
+        pure.setPoints(points);
+
+        addCommands(pure);
     }
 
     private void normalDrive(Provider<DriveDistanceCommand> driveProvider,Provider<SpinCommand> spinProvider) {
