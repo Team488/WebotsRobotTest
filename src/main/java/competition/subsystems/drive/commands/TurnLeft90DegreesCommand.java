@@ -10,6 +10,9 @@ import xbot.common.math.PIDFactory;
 import competition.subsystems.drive.DriveSubsystem;
 import competition.subsystems.pose.PoseSubsystem;
 
+// make P and D setters
+// make a way to set to turn right 90 mode?
+
 public class TurnLeft90DegreesCommand extends BaseCommand {
     
     DriveSubsystem drive;

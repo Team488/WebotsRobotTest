@@ -8,11 +8,15 @@ import competition.subsystems.pose.PoseSubsystem;
 import xbot.common.math.PIDFactory;
 import xbot.common.math.PIDManager;
 
+// make P and D setters
+// make a function to set distance? (find where distance is set)
+
 public class DriveToPositionCommand extends BaseCommand {
 
     DriveSubsystem drive;
     PoseSubsystem pos;
     PIDManager pid;
+    double targetDistance;
     double targetGoal;
   
     @Inject
@@ -32,12 +36,13 @@ public class DriveToPositionCommand extends BaseCommand {
     }
     
     public void setTargetPosition(double position) {
-        targetGoal = position; // basically sets the target position and stores it as a value
+        targetDistance = position; // basically sets the target position and stores it as a value
     }
     
     @Override
     public void initialize() {
         // If you have some one-time setup, do it here.
+        targetGoal = pos.totalDriveDistance() + targetDistance;
         pid.reset();
     }
 

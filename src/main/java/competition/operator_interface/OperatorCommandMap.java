@@ -3,6 +3,7 @@ package competition.operator_interface;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
+import competition.subsystems.drive.autonomous.SlalomAutonomousPathCommand;
 import competition.subsystems.drive.commands.DriveToPositionCommand;
 import competition.subsystems.drive.commands.TurnLeft90DegreesCommand;
 import competition.subsystems.pose.PoseSubsystem;
@@ -34,7 +35,8 @@ public class OperatorCommandMap {
         ResetSimulatorPositionCommand resetToCenter,
         ResetSimulatorPositionCommand resetToStartOfSlalom,
         TurnLeft90DegreesCommand turnleft90command,
-        DriveToPositionCommand drivetoposition
+        DriveToPositionCommand drivetoposition,
+        SlalomAutonomousPathCommand slalomAuto
     ) {
         FieldPose slalomStart = new FieldPose(150, 38, PoseSubsystem.FACING_AWAY_FROM_DRIVERS); 
         resetToStartOfSlalom.setTargetPose(slalomStart);
@@ -44,6 +46,7 @@ public class OperatorCommandMap {
         operatorInterface.gamepad.getifAvailable(2).whenPressed(resetToCenter);
         operatorInterface.gamepad.getifAvailable(3).whenPressed(resetToStartOfSlalom);
         operatorInterface.gamepad.getifAvailable(4).whenPressed(turnleft90command);
+        operatorInterface.gamepad.getifAvailable(6).whenPressed(slalomAuto);
         resetToCenter.includeOnSmartDashboard();
     }
 }
