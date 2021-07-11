@@ -11,6 +11,7 @@ import xbot.common.properties.PropertyFactory;
 
 import competition.subsystems.drive.commands.DriveToPositionCommand;
 import competition.subsystems.drive.commands.TurnLeft90DegreesCommand;
+import competition.subsystems.drive.commands.TurnRight90DegreesCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
 // along with the autonomous command selectors
@@ -26,16 +27,17 @@ public class SlalomAutonomousPathCommand extends SequentialCommandGroup {
 
     @Inject
     SlalomAutonomousPathCommand(PropertyFactory pf, TurnLeft90DegreesCommand turnLeft, DriveToPositionCommand drivePoint, 
-    Provider<DriveToPositionCommand> driveToPosProvider, Provider<TurnLeft90DegreesCommand> turnLeftProvider){ 
+    Provider<DriveToPositionCommand> driveToPosProvider, Provider<TurnLeft90DegreesCommand> turnLeftProvider, Provider<TurnRight90DegreesCommand> turnRightProvider){ 
         pf.setPrefix(this.getName());
         waitTimeProp = pf.createPersistentProperty("Wait Time", 5);
 
         DriveToPositionCommand firstDrive = driveToPosProvider.get();
         
         //shuffleboard 
-        // D = 0.6 P = 0.1
+        // D = 0.0 P = 0.1
+        // only increase D SLIGHTLY, too much can cause it to 'rock' back and forth
         // max = 0.7, min = -0.7
-        firstDrive.setTargetPosition(65);
+        firstDrive.setTargetPosition(50);
         this.addCommands(firstDrive);
 
         TurnLeft90DegreesCommand firstTurn = turnLeftProvider.get();
@@ -43,10 +45,13 @@ public class SlalomAutonomousPathCommand extends SequentialCommandGroup {
 
         DriveToPositionCommand goForward = driveToPosProvider.get();
         
-        goForward.setTargetPosition(65);
+        goForward.setTargetPosition(50);
         this.addCommands(goForward);
-    }
 
+        TurnRight90DegreesCommand secondTurn = turnRightProvider.get();
+        this.addCommands(secondTurn);
+    }
+    
     @Override
     public void initialize(){
         super.initialize();
