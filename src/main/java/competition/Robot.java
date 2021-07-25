@@ -6,6 +6,7 @@ import competition.subsystems.SubsystemDefaultCommandMap;
 import competition.subsystems.pose.PoseSubsystem;
 import competition.subsystems.vision.VisionSubsystem;
 import edu.wpi.first.hal.sim.DriverStationSim;
+import edu.wpi.first.hal.sim.mockdata.DriverStationDataJNI;
 import xbot.common.command.BaseRobot;
 import xbot.common.math.FieldPose;
 import xbot.common.subsystems.pose.BasePoseSubsystem;
@@ -34,6 +35,7 @@ public class Robot extends BaseRobot {
     @Override
     public void simulationInit() {
         super.simulationInit();
+        DriverStationDataJNI.setEnabled(true);
         webots.setFieldPoseOffset(
             new FieldPose(
                 -2.33*PoseSubsystem.INCHES_IN_A_METER, 

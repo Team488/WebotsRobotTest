@@ -25,7 +25,7 @@ public class DriveToPositionCommand extends BaseCommand {
         this.pid = pf.createPIDManager("DriveToPoint");
         this.pos = pos;
 
-        pid.setEnableErrorThreshold(true); // Turn on distance checking
+        pid.setEnableErrorThreshold(false); // Turn on distance checking
         pid.setErrorThreshold(0.1);
         pid.setEnableDerivativeThreshold(true); // Turn on speed checking
         pid.setDerivativeThreshold(0.1);
@@ -33,8 +33,9 @@ public class DriveToPositionCommand extends BaseCommand {
         // manually adjust these values to adjust the action
         // D = 0.0 P = 0.1
         // only increase D SLIGHTLY, too much can cause it to 'rock' back and forth
-        pid.setP(0.1);
+        pid.setP(0.045);
         pid.setD(0.0);
+        pid.setMaxOutput(1);
     }
     
     public void setTargetPosition(double position) {

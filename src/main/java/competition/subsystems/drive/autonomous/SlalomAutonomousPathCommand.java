@@ -28,7 +28,7 @@ public class SlalomAutonomousPathCommand extends SequentialCommandGroup {
     SlalomAutonomousPathCommand(PropertyFactory pf, TurnLeft90DegreesCommand turnLeft, DriveToPositionCommand drivePoint, 
     Provider<DriveToPositionCommand> driveToPosProvider, Provider<TurnLeft90DegreesCommand> turnLeftProvider, Provider<TurnRight90DegreesCommand> turnRightProvider){ 
         pf.setPrefix(this.getName());
-        waitTimeProp = pf.createPersistentProperty("Wait Time", 0.9); // how long it should wait
+        waitTimeProp = pf.createPersistentProperty("Wait Time", 0.1); // how long it should wait
         externalWaitSupplier = () -> waitTimeProp.get(); // lambda function - it supplies a double - fancy code
 
         //shuffleboard 
@@ -36,126 +36,73 @@ public class SlalomAutonomousPathCommand extends SequentialCommandGroup {
         // only increase D SLIGHTLY, too much can cause it to 'rock' back and forth
         // max = 0.7, min = -0.7
         DriveToPositionCommand firstDrive = driveToPosProvider.get();
-        firstDrive.setTargetPosition(65);
+        firstDrive.setTargetPosition(50);
         this.addCommands(firstDrive);
-
-        // first wait
-        this.addCommands(new DelayViaSupplierCommand(externalWaitSupplier));
 
         this.addCommands(turnLeftProvider.get());
 
-        // second wait
-        this.addCommands(new DelayViaSupplierCommand(externalWaitSupplier));
-        
         DriveToPositionCommand turnForward = driveToPosProvider.get();
-        turnForward.setTargetPosition(65);
+        turnForward.setTargetPosition(50);
         this.addCommands(turnForward);
-
-        //third wait
-        this.addCommands(new DelayViaSupplierCommand(externalWaitSupplier));
 
         this.addCommands(turnRightProvider.get());
 
         DriveToPositionCommand goForward = driveToPosProvider.get();
-        goForward.setTargetPosition(167);
+        goForward.setTargetPosition(50);
         this.addCommands(goForward);
 
-        //fourth wait
-        this.addCommands(new DelayViaSupplierCommand(externalWaitSupplier));
+        // this.addCommands(turnRightProvider.get());
 
-        this.addCommands(turnRightProvider.get());
+        // DriveToPositionCommand turnForward2 = driveToPosProvider.get();
+        // turnForward2.setTargetPosition(65);
+        // this.addCommands(turnForward2);
 
-        //fifth wait
-        this.addCommands(new DelayViaSupplierCommand(externalWaitSupplier));
+        // this.addCommands(turnLeftProvider.get());
 
-        DriveToPositionCommand turnForward2 = driveToPosProvider.get();
-        turnForward2.setTargetPosition(65);
-        this.addCommands(turnForward2);
+        // DriveToPositionCommand turnForward3 = driveToPosProvider.get();
+        // turnForward3.setTargetPosition(65);
+        // this.addCommands(turnForward3);
 
-        //sixth wait
-        this.addCommands(new DelayViaSupplierCommand(externalWaitSupplier));
+        // this.addCommands(turnLeftProvider.get());
 
-        this.addCommands(turnLeftProvider.get());
+        // DriveToPositionCommand turnForward4 = driveToPosProvider.get();
+        // turnForward3.setTargetPosition(65);
+        // this.addCommands(turnForward4);
 
-        //seventh wait
-        this.addCommands(new DelayViaSupplierCommand(externalWaitSupplier));
+        // DriveToPositionCommand turnForward5 = driveToPosProvider.get();
+        // turnForward5.setTargetPosition(65);
+        // this.addCommands(turnForward5);
 
-        DriveToPositionCommand turnForward3 = driveToPosProvider.get();
-        turnForward3.setTargetPosition(65);
-        this.addCommands(turnForward3);
+        // this.addCommands(turnLeftProvider.get());
 
-        //eighth wait
-        this.addCommands(new DelayViaSupplierCommand(externalWaitSupplier));
+        // DriveToPositionCommand turnForward6 = driveToPosProvider.get();
+        // turnForward6.setTargetPosition(65);
+        // this.addCommands(turnForward6);
 
-        this.addCommands(turnLeftProvider.get());
+        // this.addCommands(turnLeftProvider.get());
 
-        //ninth wait
-        this.addCommands(new DelayViaSupplierCommand(externalWaitSupplier));
+        // DriveToPositionCommand turnForward7 = driveToPosProvider.get();
+        // turnForward7.setTargetPosition(65);
+        // this.addCommands(turnForward7);
 
-        DriveToPositionCommand turnForward4 = driveToPosProvider.get();
-        turnForward3.setTargetPosition(65);
-        this.addCommands(turnForward4);
+        // this.addCommands(turnRightProvider.get());
 
-        //tenth wait
-        this.addCommands(new DelayViaSupplierCommand(externalWaitSupplier));
+        // DriveToPositionCommand goForward2 = driveToPosProvider.get();
+        // goForward2.setTargetPosition(165);
+        // this.addCommands(goForward2);
 
-        DriveToPositionCommand turnForward5 = driveToPosProvider.get();
-        turnForward5.setTargetPosition(65);
-        this.addCommands(turnForward5);
+        // this.addCommands(turnRightProvider.get());
 
-        //eleventh wait
-        this.addCommands(new DelayViaSupplierCommand(externalWaitSupplier));
-        
-        this.addCommands(turnLeftProvider.get());
+        // DriveToPositionCommand turnForward8 = driveToPosProvider.get();
+        // turnForward8.setTargetPosition(65);
+        // this.addCommands(turnForward8);
 
-        this.addCommands(new DelayViaSupplierCommand(externalWaitSupplier));
+        // this.addCommands(turnLeftProvider.get());
 
-        DriveToPositionCommand turnForward6 = driveToPosProvider.get();
-        turnForward6.setTargetPosition(65);
-        this.addCommands(turnForward6);
-
-        this.addCommands(new DelayViaSupplierCommand(externalWaitSupplier));
-
-        this.addCommands(turnLeftProvider.get());
-
-        this.addCommands(new DelayViaSupplierCommand(externalWaitSupplier));
-
-        DriveToPositionCommand turnForward7 = driveToPosProvider.get();
-        turnForward7.setTargetPosition(65);
-        this.addCommands(turnForward7);
-
-        this.addCommands(new DelayViaSupplierCommand(externalWaitSupplier));
-
-        this.addCommands(turnRightProvider.get());
-
-        this.addCommands(new DelayViaSupplierCommand(externalWaitSupplier));
-
-        DriveToPositionCommand goForward2 = driveToPosProvider.get();
-        goForward2.setTargetPosition(165);
-        this.addCommands(goForward2);
-
-        this.addCommands(new DelayViaSupplierCommand(externalWaitSupplier));
-
-        this.addCommands(turnRightProvider.get());
-
-        this.addCommands(new DelayViaSupplierCommand(externalWaitSupplier));
-
-        DriveToPositionCommand turnForward8 = driveToPosProvider.get();
-        turnForward8.setTargetPosition(65);
-        this.addCommands(turnForward8);
-
-        this.addCommands(new DelayViaSupplierCommand(externalWaitSupplier));
-
-        this.addCommands(turnLeftProvider.get());
-
-        this.addCommands(new DelayViaSupplierCommand(externalWaitSupplier));
-
-        DriveToPositionCommand turnForward9 = driveToPosProvider.get();
-        turnForward9.setTargetPosition(65);
-        this.addCommands(turnForward9);
-        
+        // DriveToPositionCommand turnForward9 = driveToPosProvider.get();
+        // turnForward9.setTargetPosition(65);
+        // this.addCommands(turnForward9);
     }
-
     
     @Override
     public void initialize(){

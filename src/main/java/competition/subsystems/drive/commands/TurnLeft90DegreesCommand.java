@@ -35,8 +35,9 @@ public class TurnLeft90DegreesCommand extends BaseCommand {
         pid.setDerivativeThreshold(0.1);
 
         // manually adjust these values to adjust the action
-        pid.setP(0.01);
+        pid.setP(0.02);
         pid.setD(0.0);
+        pid.setMaxOutput(0.5);
     }
     
     @Override
@@ -50,7 +51,7 @@ public class TurnLeft90DegreesCommand extends BaseCommand {
     public void execute() {
         double currentError = pose.getCurrentFieldPose().getHeading().difference(goalyaw);
         double power = -pid.calculate(0, currentError);
-        drive.tankDrive(-power, power);
+        drive.tankDrive(-power + 0.5, power + 0.5); // 0.5 makes it arc turn
     }
 
     public boolean isFinished(){ 
