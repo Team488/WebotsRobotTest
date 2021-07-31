@@ -47,7 +47,7 @@ public class TurnRight90DegreesCommand extends BaseCommand {
     public void execute() {
         double currentError = pose.getCurrentFieldPose().getHeading().difference(goalyaw);
         double power = -pid.calculate(0, currentError);
-        drive.tankDrive(-power + 0.5, power + 0.5);
+        drive.tankDrive(-power + 1.0, power + 1.0);
     }
 
     public boolean isFinished(){ 

@@ -48,12 +48,14 @@ public class DriveSubsystem extends BaseDriveSubsystem {
     }
 
     public void tankDrive(double leftPower, double rightPower) {    
-        this.leftLeader.simpleSet(leftPower);
-        this.rightLeader.simpleSet(rightPower);
-        /*
-         * i++; if (i % 25 == 0) { System.out.println("LeftPower:" + leftPower);
-         * System.out.println("RightPower:" + rightPower); }
-         */
+      
+        double scalingFactor = 0.25;
+
+        this.leftLeader.simpleSet(leftPower*scalingFactor);
+        this.rightLeader.simpleSet(rightPower*scalingFactor);
+
+
+
     }
 
     @Override

@@ -42,6 +42,7 @@ public class TurnLeft90DegreesCommand extends BaseCommand {
     
     @Override
     public void initialize() { 
+        log.info("Initializing Turn");
         goalyaw = pose.getCurrentFieldPose().getHeading().clone().shiftValue(90).getValue(); // keeps the goalyaw between -180 and 180
         goalangleprop.set(goalyaw);
         pid.reset();
@@ -51,11 +52,17 @@ public class TurnLeft90DegreesCommand extends BaseCommand {
     public void execute() {
         double currentError = pose.getCurrentFieldPose().getHeading().difference(goalyaw);
         double power = -pid.calculate(0, currentError);
-        drive.tankDrive(-power + 0.5, power + 0.5); // 0.5 makes it arc turn
+        drive.tankDrive(-power + 1.0, power + 1.0); // 0.5 makes it arc turn
     }
 
-    public boolean isFinished(){ 
-        return pid.isOnTarget();
+    public boolean isFinished(){
+        boolean check = pid.isOnTarget();
+        
+        if(check){
+            log.info("End Turn");
+        }
+
+        return check;
     }
 
 }

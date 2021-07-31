@@ -8,7 +8,7 @@ import com.google.inject.Provider;
 import xbot.common.command.DelayViaSupplierCommand;
 import xbot.common.properties.DoubleProperty;
 import xbot.common.properties.PropertyFactory;
-
+import competition.subsystems.drive.commands.DriveForDistanceCommand;
 import competition.subsystems.drive.commands.DriveToPositionCommand;
 import competition.subsystems.drive.commands.TurnLeft90DegreesCommand;
 import competition.subsystems.drive.commands.TurnRight90DegreesCommand;
@@ -23,11 +23,22 @@ public class SlalomAutonomousPathCommand extends SequentialCommandGroup {
 
     private final DoubleProperty waitTimeProp;
     Supplier<Double> externalWaitSupplier;
+    DoubleProperty horizontalDistance; 
+    DoubleProperty verticalDistance; 
+    DoubleProperty verticalLongDistance; 
+    DoubleProperty miniVerticalTurn;
+
 
     @Inject
     SlalomAutonomousPathCommand(PropertyFactory pf, TurnLeft90DegreesCommand turnLeft, DriveToPositionCommand drivePoint, 
-    Provider<DriveToPositionCommand> driveToPosProvider, Provider<TurnLeft90DegreesCommand> turnLeftProvider, Provider<TurnRight90DegreesCommand> turnRightProvider){ 
+    Provider<DriveToPositionCommand> driveToPosProvider, Provider<TurnLeft90DegreesCommand> turnLeftProvider, 
+    Provider<TurnRight90DegreesCommand> turnRightProvider, Provider<DriveForDistanceCommand> driveDistanceProvider){ 
         pf.setPrefix(this.getName());
+        horizontalDistance = pf.createPersistentProperty("HD", 10);
+        verticalDistance = pf.createPersistentProperty("VD", 30);
+        verticalLongDistance = pf.createPersistentProperty("VLD", 105);
+        miniVerticalTurn =  pf.createPersistentProperty("MVT", 15);
+
         waitTimeProp = pf.createPersistentProperty("Wait Time", 0.1); // how long it should wait
         externalWaitSupplier = () -> waitTimeProp.get(); // lambda function - it supplies a double - fancy code
 
@@ -35,73 +46,55 @@ public class SlalomAutonomousPathCommand extends SequentialCommandGroup {
         // D = 0.0 P = 0.1
         // only increase D SLIGHTLY, too much can cause it to 'rock' back and forth
         // max = 0.7, min = -0.7
-        DriveToPositionCommand firstDrive = driveToPosProvider.get();
-        firstDrive.setTargetPosition(50);
-        this.addCommands(firstDrive);
+
+        DriveForDistanceCommand testRun = driveDistanceProvider.get();
+        testRun.setTargetPosition(verticalDistance);
+        this.addCommands(testRun);
 
         this.addCommands(turnLeftProvider.get());
 
-        DriveToPositionCommand turnForward = driveToPosProvider.get();
-        turnForward.setTargetPosition(50);
-        this.addCommands(turnForward);
+        DriveForDistanceCommand testRun2 = driveDistanceProvider.get();
+        testRun2.setTargetPosition(horizontalDistance);
+        this.addCommands(testRun2);
+        
+        this.addCommands(turnRightProvider.get());
+
+        DriveForDistanceCommand testRun3 = driveDistanceProvider.get();
+        testRun3.setTargetPosition(verticalLongDistance);
+        this.addCommands(testRun3);
 
         this.addCommands(turnRightProvider.get());
 
-        DriveToPositionCommand goForward = driveToPosProvider.get();
-        goForward.setTargetPosition(50);
-        this.addCommands(goForward);
+        DriveForDistanceCommand testRun4 = driveDistanceProvider.get();
+        testRun4.setTargetPosition(horizontalDistance);
+        this.addCommands(testRun4);
 
-        // this.addCommands(turnRightProvider.get());
+        this.addCommands(turnLeftProvider.get());
 
-        // DriveToPositionCommand turnForward2 = driveToPosProvider.get();
-        // turnForward2.setTargetPosition(65);
-        // this.addCommands(turnForward2);
+        DriveForDistanceCommand testRun5 = driveDistanceProvider.get();
+        testRun5.setTargetPosition(miniVerticalTurn);
+        this.addCommands(testRun5);
+        
+        this.addCommands(turnLeftProvider.get());
 
-        // this.addCommands(turnLeftProvider.get());
+        DriveForDistanceCommand testRun6 = driveDistanceProvider.get();
+        testRun6.setTargetPosition(horizontalDistance);
+        this.addCommands(testRun6);
 
-        // DriveToPositionCommand turnForward3 = driveToPosProvider.get();
-        // turnForward3.setTargetPosition(65);
-        // this.addCommands(turnForward3);
+        this.addCommands(turnLeftProvider.get());
 
-        // this.addCommands(turnLeftProvider.get());
+        DriveForDistanceCommand testRun7 = driveDistanceProvider.get();
+        testRun7.setTargetPosition(horizontalDistance);
+        this.addCommands(testRun7);
 
-        // DriveToPositionCommand turnForward4 = driveToPosProvider.get();
-        // turnForward3.setTargetPosition(65);
-        // this.addCommands(turnForward4);
+        this.addCommands(turnLeftProvider.get());
 
-        // DriveToPositionCommand turnForward5 = driveToPosProvider.get();
-        // turnForward5.setTargetPosition(65);
-        // this.addCommands(turnForward5);
+        DriveForDistanceCommand testRun8 = driveDistanceProvider.get();
+        testRun8.setTargetPosition(horizontalDistance);
+        this.addCommands(testRun8);
 
-        // this.addCommands(turnLeftProvider.get());
+        this.addCommands(turnRightProvider.get());
 
-        // DriveToPositionCommand turnForward6 = driveToPosProvider.get();
-        // turnForward6.setTargetPosition(65);
-        // this.addCommands(turnForward6);
-
-        // this.addCommands(turnLeftProvider.get());
-
-        // DriveToPositionCommand turnForward7 = driveToPosProvider.get();
-        // turnForward7.setTargetPosition(65);
-        // this.addCommands(turnForward7);
-
-        // this.addCommands(turnRightProvider.get());
-
-        // DriveToPositionCommand goForward2 = driveToPosProvider.get();
-        // goForward2.setTargetPosition(165);
-        // this.addCommands(goForward2);
-
-        // this.addCommands(turnRightProvider.get());
-
-        // DriveToPositionCommand turnForward8 = driveToPosProvider.get();
-        // turnForward8.setTargetPosition(65);
-        // this.addCommands(turnForward8);
-
-        // this.addCommands(turnLeftProvider.get());
-
-        // DriveToPositionCommand turnForward9 = driveToPosProvider.get();
-        // turnForward9.setTargetPosition(65);
-        // this.addCommands(turnForward9);
     }
     
     @Override

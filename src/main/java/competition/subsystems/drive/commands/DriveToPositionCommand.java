@@ -25,7 +25,7 @@ public class DriveToPositionCommand extends BaseCommand {
         this.pid = pf.createPIDManager("DriveToPoint");
         this.pos = pos;
 
-        pid.setEnableErrorThreshold(false); // Turn on distance checking
+        pid.setEnableErrorThreshold(true); // Turn on distance checking
         pid.setErrorThreshold(0.1);
         pid.setEnableDerivativeThreshold(true); // Turn on speed checking
         pid.setDerivativeThreshold(0.1);
@@ -46,6 +46,7 @@ public class DriveToPositionCommand extends BaseCommand {
     public void initialize() {
         // If you have some one-time setup, do it here.
         targetGoal = pos.totalDriveDistance() + targetDistance;
+        log.info("Initializing Drive" + targetGoal);
         pid.reset();
     }
 
@@ -58,6 +59,12 @@ public class DriveToPositionCommand extends BaseCommand {
     
     @Override
     public boolean isFinished() {
-        return pid.isOnTarget();
+        boolean check = pid.isOnTarget();
+
+        if(check){
+            log.info("End Drive " + pos.totalDriveDistance());
+        }
+
+        return check;
     }
 }
