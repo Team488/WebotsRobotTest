@@ -34,18 +34,13 @@ public class SlalomAutonomousPathCommand extends SequentialCommandGroup {
     Provider<DriveToPositionCommand> driveToPosProvider, Provider<TurnLeft90DegreesCommand> turnLeftProvider, 
     Provider<TurnRight90DegreesCommand> turnRightProvider, Provider<DriveForDistanceCommand> driveDistanceProvider){ 
         pf.setPrefix(this.getName());
-        horizontalDistance = pf.createPersistentProperty("HD", 10);
-        verticalDistance = pf.createPersistentProperty("VD", 30);
+        horizontalDistance = pf.createPersistentProperty("HD", 5);
+        verticalDistance = pf.createPersistentProperty("VD", 25);
         verticalLongDistance = pf.createPersistentProperty("VLD", 105);
         miniVerticalTurn =  pf.createPersistentProperty("MVT", 15);
 
         waitTimeProp = pf.createPersistentProperty("Wait Time", 0.1); // how long it should wait
         externalWaitSupplier = () -> waitTimeProp.get(); // lambda function - it supplies a double - fancy code
-
-        //shuffleboard 
-        // D = 0.0 P = 0.1
-        // only increase D SLIGHTLY, too much can cause it to 'rock' back and forth
-        // max = 0.7, min = -0.7
 
         DriveForDistanceCommand testRun = driveDistanceProvider.get();
         testRun.setTargetPosition(verticalDistance);
@@ -94,6 +89,23 @@ public class SlalomAutonomousPathCommand extends SequentialCommandGroup {
         this.addCommands(testRun8);
 
         this.addCommands(turnRightProvider.get());
+
+        DriveForDistanceCommand testRun9 = driveDistanceProvider.get();
+        testRun9.setTargetPosition(verticalLongDistance);
+        this.addCommands(testRun9);
+
+        this.addCommands(turnRightProvider.get());
+
+        DriveForDistanceCommand testRun10 = driveDistanceProvider.get();
+        testRun10.setTargetPosition(horizontalDistance);
+        this.addCommands(testRun10);
+
+        this.addCommands(turnLeftProvider.get());
+
+        
+        DriveForDistanceCommand testRun11 = driveDistanceProvider.get();
+        testRun11.setTargetPosition(miniVerticalTurn);
+        this.addCommands(testRun11);
 
     }
     
