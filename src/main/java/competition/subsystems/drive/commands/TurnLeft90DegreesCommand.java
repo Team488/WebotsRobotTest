@@ -35,7 +35,7 @@ public class TurnLeft90DegreesCommand extends BaseCommand {
         pid.setDerivativeThreshold(0.1);
 
         // manually adjust these values to adjust the action
-        pid.setP(0.02);
+        pid.setP(0.025);
         pid.setD(0.0);
         pid.setMaxOutput(0.5);
     }
@@ -56,13 +56,13 @@ public class TurnLeft90DegreesCommand extends BaseCommand {
     }
 
     public boolean isFinished(){
-        boolean check = pid.isOnTarget();
+        // boolean check = pid.isOnTarget();
         
-        if(check){
-            log.info("End Turn");
-        }
+        // if(check){
+        //     log.info("End Turn");
+        // }
 
-        return check;
+        return pid.isOnTarget();
     }
 
 }

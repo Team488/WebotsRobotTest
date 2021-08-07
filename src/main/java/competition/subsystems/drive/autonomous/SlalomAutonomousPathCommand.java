@@ -34,10 +34,10 @@ public class SlalomAutonomousPathCommand extends SequentialCommandGroup {
     Provider<DriveToPositionCommand> driveToPosProvider, Provider<TurnLeft90DegreesCommand> turnLeftProvider, 
     Provider<TurnRight90DegreesCommand> turnRightProvider, Provider<DriveForDistanceCommand> driveDistanceProvider){ 
         pf.setPrefix(this.getName());
-        horizontalDistance = pf.createPersistentProperty("HD", 5);
-        verticalDistance = pf.createPersistentProperty("VD", 25);
-        verticalLongDistance = pf.createPersistentProperty("VLD", 105);
-        miniVerticalTurn =  pf.createPersistentProperty("MVT", 15);
+        horizontalDistance = pf.createPersistentProperty("HD", 2);
+        verticalDistance = pf.createPersistentProperty("VD", 28);
+        verticalLongDistance = pf.createPersistentProperty("VLD", 100);
+        miniVerticalTurn =  pf.createPersistentProperty("MVT", 10);
 
         waitTimeProp = pf.createPersistentProperty("Wait Time", 0.1); // how long it should wait
         externalWaitSupplier = () -> waitTimeProp.get(); // lambda function - it supplies a double - fancy code
@@ -54,7 +54,7 @@ public class SlalomAutonomousPathCommand extends SequentialCommandGroup {
         
         this.addCommands(turnRightProvider.get());
 
-        DriveForDistanceCommand testRun3 = driveDistanceProvider.get();
+        DriveForDistanceCommand testRun3 = driveDistanceProvider.get(); // Straight Drive
         testRun3.setTargetPosition(verticalLongDistance);
         this.addCommands(testRun3);
 
@@ -79,7 +79,7 @@ public class SlalomAutonomousPathCommand extends SequentialCommandGroup {
         this.addCommands(turnLeftProvider.get());
 
         DriveForDistanceCommand testRun7 = driveDistanceProvider.get();
-        testRun7.setTargetPosition(horizontalDistance);
+        testRun7.setTargetPosition(miniVerticalTurn);
         this.addCommands(testRun7);
 
         this.addCommands(turnLeftProvider.get());
@@ -90,7 +90,7 @@ public class SlalomAutonomousPathCommand extends SequentialCommandGroup {
 
         this.addCommands(turnRightProvider.get());
 
-        DriveForDistanceCommand testRun9 = driveDistanceProvider.get();
+        DriveForDistanceCommand testRun9 = driveDistanceProvider.get(); // Straight Drive 2
         testRun9.setTargetPosition(verticalLongDistance);
         this.addCommands(testRun9);
 
@@ -101,7 +101,6 @@ public class SlalomAutonomousPathCommand extends SequentialCommandGroup {
         this.addCommands(testRun10);
 
         this.addCommands(turnLeftProvider.get());
-
         
         DriveForDistanceCommand testRun11 = driveDistanceProvider.get();
         testRun11.setTargetPosition(miniVerticalTurn);

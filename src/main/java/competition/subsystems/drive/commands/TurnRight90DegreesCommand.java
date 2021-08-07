@@ -32,8 +32,9 @@ public class TurnRight90DegreesCommand extends BaseCommand {
         pid.setDerivativeThreshold(0.1);
 
         // manually adjust these values to adjust the action
-        pid.setP(0.02);
+        pid.setP(0.025);
         pid.setD(0.0);
+        pid.setMaxOutput(0.5);
     }
     
     @Override
