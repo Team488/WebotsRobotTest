@@ -27,13 +27,17 @@ public class DriveForDistanceCommand extends BaseCommand {
     
     @Override
     public void initialize() {
-        // If you have some one-time setup, do it here.
         targetGoal = pos.totalDriveDistance() + targetDistance.get();
         log.info("Initializing Drive" + targetGoal);
     }
 
     @Override
     public void execute() {
+ 
+        // if(targetDistance.get() == 100){ //should increase the speed TODO
+        //     drive.tankDrive(power, power); 
+        // }
+
         drive.tankDrive(power, power);
     }
     
