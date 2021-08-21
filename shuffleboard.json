@@ -61,6 +61,19 @@
               "Layout/Label position": "BOTTOM",
               "_children": []
             }
+          },
+          "8,0": {
+            "size": [
+              2,
+              4
+            ],
+            "content": {
+              "_type": "Subsystem Layout",
+              "_source0": "network_table:///LiveWindow/VisionSubsystem",
+              "_title": "VisionSubsystem",
+              "Layout/Label position": "BOTTOM",
+              "_children": []
+            }
           }
         }
       }
@@ -132,11 +145,178 @@
           }
         }
       }
+    },
+    {
+      "title": "PurePursuit",
+      "autoPopulate": false,
+      "autoPopulatePrefix": "",
+      "widgetPane": {
+        "gridSize": 128.0,
+        "showGrid": true,
+        "hgap": 16.0,
+        "vgap": 16.0,
+        "tiles": {
+          "3,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/DriveSubsystem/PositionPID/P",
+              "_title": "/SmartDashboard/DriveSubsystem/PositionPID/P"
+            }
+          },
+          "4,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/DriveSubsystem/PositionPID/I",
+              "_title": "/SmartDashboard/DriveSubsystem/PositionPID/I"
+            }
+          },
+          "5,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/DriveSubsystem/PositionPID/D",
+              "_title": "/SmartDashboard/DriveSubsystem/PositionPID/D"
+            }
+          },
+          "3,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/DriveSubsystem/RotationPID/P",
+              "_title": "/SmartDashboard/DriveSubsystem/RotationPID/P"
+            }
+          },
+          "4,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/DriveSubsystem/RotationPID/I",
+              "_title": "/SmartDashboard/DriveSubsystem/RotationPID/I"
+            }
+          },
+          "5,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/DriveSubsystem/RotationPID/D",
+              "_title": "/SmartDashboard/DriveSubsystem/RotationPID/D"
+            }
+          },
+          "6,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/DriveSubsystem/RotationPID/Max Output",
+              "_title": "/SmartDashboard/DriveSubsystem/RotationPID/Max Output"
+            }
+          },
+          "7,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/DriveSubsystem/RotationPID/Min Output",
+              "_title": "/SmartDashboard/DriveSubsystem/RotationPID/Min Output"
+            }
+          },
+          "6,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/DriveSubsystem/PositionPID/Max Output",
+              "_title": "/SmartDashboard/DriveSubsystem/PositionPID/Max Output"
+            }
+          },
+          "7,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/DriveSubsystem/PositionPID/Min Output",
+              "_title": "/SmartDashboard/DriveSubsystem/PositionPID/Min Output"
+            }
+          },
+          "3,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Webots/Simulator Pose X",
+              "_title": "/SmartDashboard/Webots/Simulator Pose X"
+            }
+          },
+          "4,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Webots/Simulator Pose Y",
+              "_title": "/SmartDashboard/Webots/Simulator Pose Y"
+            }
+          },
+          "3,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/PoseSubsystem/Total distance X",
+              "_title": "/SmartDashboard/PoseSubsystem/Total distance X"
+            }
+          },
+          "4,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/PoseSubsystem/Total distance Y",
+              "_title": "/SmartDashboard/PoseSubsystem/Total distance Y"
+            }
+          }
+        }
+      }
     }
   ],
   "windowGeometry": {
     "x": -1288.0,
-    "y": -9.0,
+    "y": -2.0,
     "width": 1296.0,
     "height": 1000.0
   }

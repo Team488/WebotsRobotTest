@@ -34,6 +34,10 @@ public class Robot extends BaseRobot {
     @Override
     public void simulationInit() {
         super.simulationInit();
+        
+        var ds = new DriverStationSim();
+        ds.setEnabled(true);
+        
         webots.setFieldPoseOffset(
             new FieldPose(
                 -2.33*PoseSubsystem.INCHES_IN_A_METER, 

@@ -4,10 +4,13 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 import competition.subsystems.pose.PoseSubsystem;
-import xbot.common.math.ContiguousHeading;
 import xbot.common.math.FieldPose;
-import xbot.common.math.XYPair;
 import xbot.common.simulation.ResetSimulatorPositionCommand;
+import xbot.common.subsystems.drive.RabbitPoint;
+import xbot.common.subsystems.drive.SimulatedPurePursuitCommand;
+import xbot.common.subsystems.drive.RabbitPoint.PointDriveStyle;
+import xbot.common.subsystems.drive.RabbitPoint.PointTerminatingType;
+import xbot.common.subsystems.drive.RabbitPoint.PointType;
 import xbot.common.subsystems.pose.commands.SetRobotHeadingCommand;
 
 /**
@@ -30,7 +33,8 @@ public class OperatorCommandMap {
     public void setupSimulationCommands(
         OperatorInterface operatorInterface,
         ResetSimulatorPositionCommand resetToCenter,
-        ResetSimulatorPositionCommand resetToStartOfSlalom
+        ResetSimulatorPositionCommand resetToStartOfSlalom,
+        SimulatedPurePursuitCommand pursuit
     ) {
         FieldPose slalomStart = new FieldPose(150, 38, PoseSubsystem.FACING_AWAY_FROM_DRIVERS); 
         resetToStartOfSlalom.setTargetPose(slalomStart);
@@ -39,5 +43,18 @@ public class OperatorCommandMap {
         operatorInterface.gamepad.getifAvailable(2).whenPressed(resetToCenter);
         operatorInterface.gamepad.getifAvailable(3).whenPressed(resetToStartOfSlalom);
         resetToCenter.includeOnSmartDashboard();
+
+        pursuit.addPoint(new RabbitPoint(new FieldPose(122, 96, 135), PointType.PositionAndHeading, PointTerminatingType.Continue));
+        pursuit.addPoint(new RabbitPoint(new FieldPose(93, 180, 90), PointType.PositionAndHeading, PointTerminatingType.Continue));
+        pursuit.addPoint(new RabbitPoint(new FieldPose(120, 268, 45), PointType.PositionAndHeading, PointTerminatingType.Continue));
+        pursuit.addPoint(new RabbitPoint(new FieldPose(150, 300, 90), PointType.PositionAndHeading, PointTerminatingType.Continue));
+        pursuit.addPoint(new RabbitPoint(new FieldPose(120, 330, 180), PointType.PositionAndHeading, PointTerminatingType.Continue));
+        pursuit.addPoint(new RabbitPoint(new FieldPose(95, 300, -90), PointType.PositionAndHeading, PointTerminatingType.Continue));
+        pursuit.addPoint(new RabbitPoint(new FieldPose(120, 268, -45), PointType.PositionAndHeading, PointTerminatingType.Continue));
+        pursuit.addPoint(new RabbitPoint(new FieldPose(150, 180, -90), PointType.PositionAndHeading, PointTerminatingType.Continue));
+        pursuit.addPoint(new RabbitPoint(new FieldPose(122, 88, -135), PointType.PositionAndHeading, PointTerminatingType.Continue));
+        pursuit.addPoint(new RabbitPoint(new FieldPose(90, 30, -90), PointType.PositionAndHeading, PointTerminatingType.Stop));
+
+        operatorInterface.gamepad.getifAvailable(4).whileHeld(pursuit);
     }
 }
