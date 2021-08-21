@@ -54,8 +54,6 @@ public class DriveSubsystem extends BaseDriveSubsystem {
         this.leftLeader.simpleSet(leftPower*scalingFactor);
         this.rightLeader.simpleSet(rightPower*scalingFactor);
 
-
-
     }
 
     @Override

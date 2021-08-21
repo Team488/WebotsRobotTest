@@ -25,7 +25,8 @@ public class SlalomAutonomousPathCommand extends SequentialCommandGroup {
     DoubleProperty verticalDistance; 
     DoubleProperty verticalLongDistance; 
     DoubleProperty miniVerticalTurn;
-
+    DoubleProperty turnLeft;
+    DoubleProperty turnRight;
 
     @Inject
     SlalomAutonomousPathCommand(PropertyFactory pf, DriveToPositionCommand drivePoint, 
@@ -35,6 +36,8 @@ public class SlalomAutonomousPathCommand extends SequentialCommandGroup {
         verticalDistance = pf.createPersistentProperty("VD", 28);
         verticalLongDistance = pf.createPersistentProperty("VLD", 100);
         miniVerticalTurn =  pf.createPersistentProperty("MVT", 10);
+        turnLeft = pf.createPersistentProperty("TL", 90); // need to delete networktable to set
+        turnRight = pf.createPersistentProperty("TR", -90);
 
         waitTimeProp = pf.createPersistentProperty("Wait Time", 0.1); // how long it should wait
         externalWaitSupplier = () -> waitTimeProp.get(); // lambda function - it supplies a double - fancy code
@@ -44,7 +47,7 @@ public class SlalomAutonomousPathCommand extends SequentialCommandGroup {
         this.addCommands(testRun);
 
         TurnCommand turn1 = turnProvider.get();
-        turn1.setTargetGoal(90);
+        turn1.setTargetGoal(turnLeft);
         this.addCommands(turn1);
 
         DriveForDistanceCommand testRun2 = driveDistanceProvider.get();
@@ -52,7 +55,7 @@ public class SlalomAutonomousPathCommand extends SequentialCommandGroup {
         this.addCommands(testRun2);
         
         TurnCommand turn2 = turnProvider.get();
-        turn2.setTargetGoal(-90);
+        turn2.setTargetGoal(turnRight);
         this.addCommands(turn2);
 
         DriveForDistanceCommand testRun3 = driveDistanceProvider.get(); // Straight Drive
@@ -60,7 +63,7 @@ public class SlalomAutonomousPathCommand extends SequentialCommandGroup {
         this.addCommands(testRun3);
 
         TurnCommand turn3 = turnProvider.get();
-        turn3.setTargetGoal(-90);
+        turn3.setTargetGoal(turnRight);
         this.addCommands(turn3);
 
         DriveForDistanceCommand testRun4 = driveDistanceProvider.get();
@@ -68,7 +71,7 @@ public class SlalomAutonomousPathCommand extends SequentialCommandGroup {
         this.addCommands(testRun4);
 
         TurnCommand turn4 = turnProvider.get();
-        turn4.setTargetGoal(90);
+        turn4.setTargetGoal(turnLeft);
         this.addCommands(turn4);
 
         DriveForDistanceCommand testRun5 = driveDistanceProvider.get();
@@ -76,7 +79,7 @@ public class SlalomAutonomousPathCommand extends SequentialCommandGroup {
         this.addCommands(testRun5);
         
         TurnCommand turn5 = turnProvider.get();
-        turn5.setTargetGoal(90);
+        turn5.setTargetGoal(turnLeft);
         this.addCommands(turn5);
 
         DriveForDistanceCommand testRun6 = driveDistanceProvider.get();
@@ -84,7 +87,7 @@ public class SlalomAutonomousPathCommand extends SequentialCommandGroup {
         this.addCommands(testRun6);
 
         TurnCommand turn6 = turnProvider.get();
-        turn6.setTargetGoal(90);
+        turn6.setTargetGoal(turnLeft);
         this.addCommands(turn6);
 
         DriveForDistanceCommand testRun7 = driveDistanceProvider.get();
@@ -92,7 +95,7 @@ public class SlalomAutonomousPathCommand extends SequentialCommandGroup {
         this.addCommands(testRun7);
 
         TurnCommand turn7 = turnProvider.get();
-        turn7.setTargetGoal(90);
+        turn7.setTargetGoal(turnLeft);
         this.addCommands(turn7);
 
         DriveForDistanceCommand testRun8 = driveDistanceProvider.get();
@@ -100,7 +103,7 @@ public class SlalomAutonomousPathCommand extends SequentialCommandGroup {
         this.addCommands(testRun8);
 
         TurnCommand turn8 = turnProvider.get();
-        turn8.setTargetGoal(-90);
+        turn8.setTargetGoal(turnRight);
         this.addCommands(turn8);
 
         DriveForDistanceCommand testRun9 = driveDistanceProvider.get(); // Straight Drive 2
@@ -108,7 +111,7 @@ public class SlalomAutonomousPathCommand extends SequentialCommandGroup {
         this.addCommands(testRun9);
 
         TurnCommand turn9 = turnProvider.get();
-        turn9.setTargetGoal(-90);
+        turn9.setTargetGoal(turnRight);
         this.addCommands(turn9);
 
         DriveForDistanceCommand testRun10 = driveDistanceProvider.get();
@@ -116,7 +119,7 @@ public class SlalomAutonomousPathCommand extends SequentialCommandGroup {
         this.addCommands(testRun10);
 
         TurnCommand turn10 = turnProvider.get();
-        turn10.setTargetGoal(90);
+        turn10.setTargetGoal(turnLeft);
         this.addCommands(turn10);
         
         DriveForDistanceCommand testRun11 = driveDistanceProvider.get();

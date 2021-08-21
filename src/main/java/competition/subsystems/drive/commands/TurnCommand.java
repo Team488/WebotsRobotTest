@@ -17,7 +17,7 @@ public class TurnCommand extends BaseCommand {
     double goalyaw;
     PoseSubsystem pose;
     DoubleProperty goalangleprop;
-    final DoubleProperty shiftMagnitude; // from shiftValue function
+    DoubleProperty shiftMagnitude; // from shiftValue function
 
     @Inject
     public TurnCommand(DriveSubsystem driveSubsystem, PoseSubsystem pose, PIDFactory pf, PropertyFactory propf){
@@ -34,13 +34,13 @@ public class TurnCommand extends BaseCommand {
         pid.setDerivativeThreshold(0.1);
 
         // manually adjust these values to adjust the action
-        pid.setP(0.025);
+        pid.setP(0.024);
         pid.setD(0.0);
         pid.setMaxOutput(0.5);
     }
 
-    public void setTargetGoal(double degrees){ // 90 - left -90 -right
-        shiftMagnitude.set(degrees);
+    public void setTargetGoal(DoubleProperty degrees){ // 90 - left -90 -right
+        shiftMagnitude = degrees;
     }
 
     @Override

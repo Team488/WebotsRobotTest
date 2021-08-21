@@ -34,9 +34,10 @@ public class DriveForDistanceCommand extends BaseCommand {
     @Override
     public void execute() {
  
-        // if(targetDistance.get() == 100){ //should increase the speed TODO
-        //     drive.tankDrive(power, power); 
-        // }
+        if(targetDistance.get() >= 100){ //should increase the speed TODO
+            power = 9;
+            drive.tankDrive(power, power); 
+        }
 
         drive.tankDrive(power, power);
     }
