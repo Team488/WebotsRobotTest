@@ -309,6 +309,61 @@
               "_source0": "network_table:///SmartDashboard/PoseSubsystem/Total distance Y",
               "_title": "/SmartDashboard/PoseSubsystem/Total distance Y"
             }
+          },
+          "3,4": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/SimulatedPurePursuitCommand/Motion Budget",
+              "_title": "/SmartDashboard/SimulatedPurePursuitCommand/Motion Budget"
+            }
+          },
+          "4,4": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/SimulatedPurePursuitCommand/PerpindicularRatio",
+              "_title": "/SmartDashboard/SimulatedPurePursuitCommand/PerpindicularRatio"
+            }
+          },
+          "5,4": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/SimulatedPurePursuitCommand/Rabbit distance threshold",
+              "_title": "/SmartDashboard/SimulatedPurePursuitCommand/Rabbit distance threshold"
+            }
+          },
+          "6,4": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/SimulatedPurePursuitCommand/Rabbit lookahead (in)",
+              "_title": "/SmartDashboard/SimulatedPurePursuitCommand/Rabbit lookahead (in)"
+            }
+          },
+          "3,5": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/DriveSubsystem/SmoothingHistoryLength",
+              "_title": "/SmartDashboard/DriveSubsystem/SmoothingHistoryLength"
+            }
           }
         }
       }
