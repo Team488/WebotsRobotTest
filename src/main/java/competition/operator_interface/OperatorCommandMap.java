@@ -3,14 +3,14 @@ package competition.operator_interface;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
+import competition.subsystems.drive.commands.CircleDriveCommand;
 import competition.subsystems.pose.PoseSubsystem;
 import xbot.common.math.FieldPose;
 import xbot.common.simulation.ResetSimulatorPositionCommand;
 import xbot.common.subsystems.drive.RabbitPoint;
-import xbot.common.subsystems.drive.SimulatedPurePursuitCommand;
-import xbot.common.subsystems.drive.RabbitPoint.PointDriveStyle;
 import xbot.common.subsystems.drive.RabbitPoint.PointTerminatingType;
 import xbot.common.subsystems.drive.RabbitPoint.PointType;
+import xbot.common.subsystems.drive.SimulatedPurePursuitCommand;
 import xbot.common.subsystems.pose.commands.SetRobotHeadingCommand;
 
 /**
@@ -34,7 +34,8 @@ public class OperatorCommandMap {
         OperatorInterface operatorInterface,
         ResetSimulatorPositionCommand resetToCenter,
         ResetSimulatorPositionCommand resetToStartOfSlalom,
-        SimulatedPurePursuitCommand pursuit
+        SimulatedPurePursuitCommand pursuit,
+        CircleDriveCommand circleDrive
     ) {
         FieldPose slalomStart = new FieldPose(150, 38, PoseSubsystem.FACING_AWAY_FROM_DRIVERS); 
         resetToStartOfSlalom.setTargetPose(slalomStart);
@@ -55,6 +56,6 @@ public class OperatorCommandMap {
         pursuit.addPoint(new RabbitPoint(new FieldPose(122, 88, -135), PointType.PositionAndHeading, PointTerminatingType.Continue));
         pursuit.addPoint(new RabbitPoint(new FieldPose(90, 30, -90), PointType.PositionAndHeading, PointTerminatingType.Stop));
 
-        operatorInterface.gamepad.getifAvailable(4).whileHeld(pursuit);
+        operatorInterface.gamepad.getifAvailable(4).whileHeld(circleDrive);
     }
 }
