@@ -3,10 +3,13 @@ package competition.operator_interface;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
+import competition.subsystems.drive.DriveSubsystem;
 import competition.subsystems.drive.autonomous.SlalomAutonomousPathCommand;
 import competition.subsystems.drive.commands.DriveToPositionCommand;
+import competition.subsystems.drive.commands.PauseDriveCommand;
 import competition.subsystems.drive.commands.TurnCommand;
 import competition.subsystems.pose.PoseSubsystem;
+import xbot.common.controls.sensors.XXboxController.XboxButton;
 import xbot.common.math.ContiguousHeading;
 import xbot.common.math.FieldPose;
 import xbot.common.math.XYPair;
@@ -35,19 +38,19 @@ public class OperatorCommandMap {
         ResetSimulatorPositionCommand resetToCenter,
         ResetSimulatorPositionCommand resetToStartOfSlalom,
         TurnCommand turn,
-        // TurnRight90DegreesCommand turnRight90,
         DriveToPositionCommand driveToPosition,
+        PauseDriveCommand pause,
         SlalomAutonomousPathCommand slalomAuto
     ) {
         FieldPose slalomStart = new FieldPose(150, 38, PoseSubsystem.FACING_AWAY_FROM_DRIVERS); 
         resetToStartOfSlalom.setTargetPose(slalomStart);
         resetToCenter.setTargetPose(new FieldPose(80, 150, PoseSubsystem.FACING_AWAY_FROM_DRIVERS));
 
-        // operatorInterface.gamepad.getifAvailable(5).whenPressed();
-        operatorInterface.gamepad.getifAvailable(2).whenPressed(resetToCenter);
-        operatorInterface.gamepad.getifAvailable(3).whenPressed(resetToStartOfSlalom);
-        operatorInterface.gamepad.getifAvailable(4).whenPressed(turn);
-        operatorInterface.gamepad.getifAvailable(6).whenPressed(slalomAuto);
+        operatorInterface.gamepad.getifAvailable(XboxButton.A).whileHeld(pause);
+        operatorInterface.gamepad.getifAvailable(XboxButton.B).whenPressed(resetToCenter);
+        operatorInterface.gamepad.getifAvailable(XboxButton.X).whenPressed(resetToStartOfSlalom);
+        operatorInterface.gamepad.getifAvailable(XboxButton.Y).whenPressed(turn);
+        operatorInterface.gamepad.getifAvailable(XboxButton.RightBumper).whenPressed(slalomAuto);
 
         resetToCenter.includeOnSmartDashboard();
     }

@@ -27,17 +27,23 @@ public class SlalomAutonomousPathCommand extends SequentialCommandGroup {
     DoubleProperty miniVerticalTurn;
     DoubleProperty turnLeft;
     DoubleProperty turnRight;
+    DoubleProperty turnLeft90;
+    DoubleProperty turnRightM;
 
     @Inject
     SlalomAutonomousPathCommand(PropertyFactory pf, DriveToPositionCommand drivePoint, 
     Provider<DriveToPositionCommand> driveToPosProvider, Provider<TurnCommand> turnProvider, Provider<DriveForDistanceCommand> driveDistanceProvider){ 
         pf.setPrefix(this.getName());
-        horizontalDistance = pf.createPersistentProperty("HD", 2);
-        verticalDistance = pf.createPersistentProperty("VD", 28);
-        verticalLongDistance = pf.createPersistentProperty("VLD", 100);
+        // need to delete networktable to set
+        horizontalDistance = pf.createPersistentProperty("HD", 30);
+        verticalDistance = pf.createPersistentProperty("VD", 13);
+        verticalLongDistance = pf.createPersistentProperty("VLD", 72);
         miniVerticalTurn =  pf.createPersistentProperty("MVT", 10);
-        turnLeft = pf.createPersistentProperty("TL", 90); // need to delete networktable to set
-        turnRight = pf.createPersistentProperty("TR", -90);
+        turnLeft = pf.createPersistentProperty("TL", 52);
+        turnRight = pf.createPersistentProperty("TR", -52);
+        turnLeft90 = pf.createPersistentProperty("TL90", 93);
+        turnRightM = pf.createPersistentProperty("TRM", -10);
+
 
         waitTimeProp = pf.createPersistentProperty("Wait Time", 0.1); // how long it should wait
         externalWaitSupplier = () -> waitTimeProp.get(); // lambda function - it supplies a double - fancy code
@@ -73,33 +79,21 @@ public class SlalomAutonomousPathCommand extends SequentialCommandGroup {
         TurnCommand turn4 = turnProvider.get();
         turn4.setTargetGoal(turnLeft);
         this.addCommands(turn4);
-
-        DriveForDistanceCommand testRun5 = driveDistanceProvider.get();
-        testRun5.setTargetPosition(miniVerticalTurn);
-        this.addCommands(testRun5);
         
         TurnCommand turn5 = turnProvider.get();
-        turn5.setTargetGoal(turnLeft);
+        turn5.setTargetGoal(turnLeft90);
         this.addCommands(turn5);
 
-        DriveForDistanceCommand testRun6 = driveDistanceProvider.get();
-        testRun6.setTargetPosition(horizontalDistance);
-        this.addCommands(testRun6);
-
         TurnCommand turn6 = turnProvider.get();
-        turn6.setTargetGoal(turnLeft);
+        turn6.setTargetGoal(turnLeft90);
         this.addCommands(turn6);
-
-        DriveForDistanceCommand testRun7 = driveDistanceProvider.get();
-        testRun7.setTargetPosition(miniVerticalTurn);
-        this.addCommands(testRun7);
 
         TurnCommand turn7 = turnProvider.get();
         turn7.setTargetGoal(turnLeft);
         this.addCommands(turn7);
 
         DriveForDistanceCommand testRun8 = driveDistanceProvider.get();
-        testRun8.setTargetPosition(horizontalDistance);
+        testRun8.setTargetPosition(miniVerticalTurn);
         this.addCommands(testRun8);
 
         TurnCommand turn8 = turnProvider.get();
@@ -114,17 +108,17 @@ public class SlalomAutonomousPathCommand extends SequentialCommandGroup {
         turn9.setTargetGoal(turnRight);
         this.addCommands(turn9);
 
+        TurnCommand turn10 = turnProvider.get();
+        turn10.setTargetGoal(turnRightM);
+        this.addCommands(turn10);
+
         DriveForDistanceCommand testRun10 = driveDistanceProvider.get();
         testRun10.setTargetPosition(horizontalDistance);
         this.addCommands(testRun10);
 
-        TurnCommand turn10 = turnProvider.get();
-        turn10.setTargetGoal(turnLeft);
-        this.addCommands(turn10);
-        
-        DriveForDistanceCommand testRun11 = driveDistanceProvider.get();
-        testRun11.setTargetPosition(miniVerticalTurn);
-        this.addCommands(testRun11);
+        TurnCommand turn11 = turnProvider.get();
+        turn11.setTargetGoal(turnLeft);
+        this.addCommands(turn11);
     }
     
     @Override

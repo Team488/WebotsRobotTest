@@ -6,9 +6,11 @@ import com.google.inject.Singleton;
 
 import org.apache.log4j.Logger;
 
+import competition.operator_interface.OperatorInterface;
 import xbot.common.controls.actuators.XCANTalon;
 import xbot.common.controls.sensors.XAnalogDistanceSensor;
 import xbot.common.controls.sensors.XAnalogDistanceSensor.VoltageMaps;
+import xbot.common.controls.sensors.XXboxController.XboxButton;
 import xbot.common.injection.electrical_contract.CANTalonInfo;
 import xbot.common.injection.wpi_factories.CommonLibFactory;
 import xbot.common.math.PIDManager;
@@ -25,6 +27,8 @@ public class DriveSubsystem extends BaseDriveSubsystem {
 
     public final XAnalogDistanceSensor distanceSensor;
     public final XAnalogDistanceSensor distanceSensor2;
+
+    public double scalingFactor = 0.25;
 
     int i;
     private final double simulatedEncoderFactor = 256.0 * 39.3701; //256 "ticks" per meter, and ~39 inches in a meter
@@ -48,12 +52,18 @@ public class DriveSubsystem extends BaseDriveSubsystem {
     }
 
     public void tankDrive(double leftPower, double rightPower) {    
-      
-        double scalingFactor = 0.25;
 
         this.leftLeader.simpleSet(leftPower*scalingFactor);
         this.rightLeader.simpleSet(rightPower*scalingFactor);
 
+    }
+
+    public void setScalingFactor(double scalingFactor) {
+        this.scalingFactor = scalingFactor;
+    }
+
+    public double getScalingFactor() {
+        return scalingFactor;
     }
 
     @Override
