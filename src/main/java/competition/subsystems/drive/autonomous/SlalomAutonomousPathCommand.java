@@ -27,7 +27,7 @@ public class SlalomAutonomousPathCommand extends SequentialCommandGroup {
     DoubleProperty miniVerticalTurn;
     DoubleProperty turnLeft;
     DoubleProperty turnRight;
-    DoubleProperty turnLeft93;
+    DoubleProperty turnRight90;
     DoubleProperty turnRightM;
 
     @Inject
@@ -39,11 +39,10 @@ public class SlalomAutonomousPathCommand extends SequentialCommandGroup {
         verticalDistance = pf.createPersistentProperty("VD", 13);
         verticalLongDistance = pf.createPersistentProperty("VLD", 72);
         miniVerticalTurn =  pf.createPersistentProperty("MVT", 10);
-        turnLeft = pf.createPersistentProperty("TL", 55);
-        turnRight = pf.createPersistentProperty("TR", -55);
-        turnLeft93 = pf.createPersistentProperty("TL93", 93);
+        turnLeft = pf.createPersistentProperty("TL", 135); // 55
+        turnRight = pf.createPersistentProperty("TR", 45); // -55
+        turnRight90 = pf.createPersistentProperty("TR90", 90); // 93
         turnRightM = pf.createPersistentProperty("TRM", -5);
-
 
         waitTimeProp = pf.createPersistentProperty("Wait Time", 0.1); // how long it should wait
         externalWaitSupplier = () -> waitTimeProp.get(); // lambda function - it supplies a double - fancy code
@@ -61,7 +60,7 @@ public class SlalomAutonomousPathCommand extends SequentialCommandGroup {
         this.addCommands(testRun2);
         
         TurnCommand turn2 = turnProvider.get();
-        turn2.setTargetGoal(turnRight);
+        turn2.setTargetGoal(turnRight90);
         this.addCommands(turn2);
 
         DriveForDistanceCommand testRun3 = driveDistanceProvider.get(); // Straight Drive
@@ -81,11 +80,11 @@ public class SlalomAutonomousPathCommand extends SequentialCommandGroup {
         this.addCommands(turn4);
         
         TurnCommand turn5 = turnProvider.get();
-        turn5.setTargetGoal(turnLeft93);
+        turn5.setTargetGoal(turnRight90);
         this.addCommands(turn5);
 
         TurnCommand turn6 = turnProvider.get();
-        turn6.setTargetGoal(turnLeft93);
+        turn6.setTargetGoal(turnRight90);
         this.addCommands(turn6);
 
         TurnCommand turn7 = turnProvider.get();

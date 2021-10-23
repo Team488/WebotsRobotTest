@@ -17,7 +17,7 @@ public class TurnCommand extends BaseCommand {
     double goalyaw;
     PoseSubsystem pose;
     DoubleProperty goalangleprop;
-    DoubleProperty shiftMagnitude; // from shiftValue function
+    DoubleProperty shiftMagnitude; // raw goal value from shiftValue function
 
     @Inject
     public TurnCommand(DriveSubsystem driveSubsystem, PoseSubsystem pose, PIDFactory pf, PropertyFactory propf){
@@ -47,7 +47,7 @@ public class TurnCommand extends BaseCommand {
     public void initialize() {
         log.info("Initializing Turn");
         
-        goalyaw = pose.getCurrentFieldPose().getHeading().clone().shiftValue(shiftMagnitude.get()).getValue(); // keeps the goalyaw between -180 and 180
+        goalyaw = shiftMagnitude.get(); //pose.getCurrentFieldPose().getHeading().clone().shiftValue(shiftMagnitude.get()).getValue(); // keeps the goalyaw between -180 and 180
         goalangleprop.set(goalyaw);
         pid.reset();
     }

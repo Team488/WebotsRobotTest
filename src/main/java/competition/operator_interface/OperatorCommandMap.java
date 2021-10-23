@@ -50,7 +50,7 @@ public class OperatorCommandMap {
         operatorInterface.gamepad.getifAvailable(XboxButton.B).whenPressed(resetToCenter);
         operatorInterface.gamepad.getifAvailable(XboxButton.X).whenPressed(resetToStartOfSlalom);
         operatorInterface.gamepad.getifAvailable(XboxButton.Y).whenPressed(turn);
-        operatorInterface.gamepad.getifAvailable(XboxButton.RightBumper).whenPressed(slalomAuto);
+        operatorInterface.gamepad.getifAvailable(XboxButton.RightBumper).whileHeld(slalomAuto);
 
         resetToCenter.includeOnSmartDashboard();
     }
