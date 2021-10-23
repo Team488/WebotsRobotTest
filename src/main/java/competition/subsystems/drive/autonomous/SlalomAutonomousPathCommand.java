@@ -27,7 +27,7 @@ public class SlalomAutonomousPathCommand extends SequentialCommandGroup {
     DoubleProperty miniVerticalTurn;
     DoubleProperty turnLeft;
     DoubleProperty turnRight;
-    DoubleProperty turnLeft90;
+    DoubleProperty turnLeft93;
     DoubleProperty turnRightM;
 
     @Inject
@@ -39,10 +39,10 @@ public class SlalomAutonomousPathCommand extends SequentialCommandGroup {
         verticalDistance = pf.createPersistentProperty("VD", 13);
         verticalLongDistance = pf.createPersistentProperty("VLD", 72);
         miniVerticalTurn =  pf.createPersistentProperty("MVT", 10);
-        turnLeft = pf.createPersistentProperty("TL", 52);
-        turnRight = pf.createPersistentProperty("TR", -52);
-        turnLeft90 = pf.createPersistentProperty("TL90", 93);
-        turnRightM = pf.createPersistentProperty("TRM", -10);
+        turnLeft = pf.createPersistentProperty("TL", 55);
+        turnRight = pf.createPersistentProperty("TR", -55);
+        turnLeft93 = pf.createPersistentProperty("TL93", 93);
+        turnRightM = pf.createPersistentProperty("TRM", -5);
 
 
         waitTimeProp = pf.createPersistentProperty("Wait Time", 0.1); // how long it should wait
@@ -81,11 +81,11 @@ public class SlalomAutonomousPathCommand extends SequentialCommandGroup {
         this.addCommands(turn4);
         
         TurnCommand turn5 = turnProvider.get();
-        turn5.setTargetGoal(turnLeft90);
+        turn5.setTargetGoal(turnLeft93);
         this.addCommands(turn5);
 
         TurnCommand turn6 = turnProvider.get();
-        turn6.setTargetGoal(turnLeft90);
+        turn6.setTargetGoal(turnLeft93);
         this.addCommands(turn6);
 
         TurnCommand turn7 = turnProvider.get();
@@ -113,7 +113,7 @@ public class SlalomAutonomousPathCommand extends SequentialCommandGroup {
         this.addCommands(turn10);
 
         DriveForDistanceCommand testRun10 = driveDistanceProvider.get();
-        testRun10.setTargetPosition(horizontalDistance);
+        testRun10.setTargetPosition(miniVerticalTurn);
         this.addCommands(testRun10);
 
         TurnCommand turn11 = turnProvider.get();
