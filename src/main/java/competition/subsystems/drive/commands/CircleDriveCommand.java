@@ -27,6 +27,9 @@ public class CircleDriveCommand extends BaseCommand {
     DoubleProperty spiralFactor;
     DoubleProperty spiralMax;
     BooleanProperty terminalApproach;
+    DoubleProperty terminatingProximity;
+
+    FieldPose goalPose;
 
     @Inject
     public CircleDriveCommand(DriveSubsystem drive, PoseSubsystem pose, WebotsClient webots, CommonLibFactory clf, PropertyFactory propertyFactory) {
@@ -41,11 +44,18 @@ public class CircleDriveCommand extends BaseCommand {
         spiralFactor = propertyFactory.createPersistentProperty("SpiralFactor", 1);
         spiralMax = propertyFactory.createPersistentProperty("SpiralMax", 15);
         terminalApproach = propertyFactory.createEphemeralProperty("Terminal Approach", false);
+        terminatingProximity = propertyFactory.createPersistentProperty("Terminating Proximity", 6.0);
+
+        addRequirements(drive);
     }
 
     @Override
     public void initialize() {
         log.info("Initializing");
+    }
+
+    public void setGoalPose(FieldPose goalPose) {
+        this.goalPose = goalPose;
     }
 
     XYPair circleCenter;
@@ -55,26 +65,25 @@ public class CircleDriveCommand extends BaseCommand {
         // Assume there is a circle centered at 0,0, with radius 5 feet. We want to constantly circle around that point at that radius.
         
         // Now instead get a circle based on a field pose
-        FieldPose goalPoint = new FieldPose(0, 0, -180);
-        FieldPose ahead = goalPoint.getPointAlongPoseLine(12);
-        FieldPose behind = goalPoint.getPointAlongPoseLine(-12);
+        FieldPose ahead = goalPose.getPointAlongPoseLine(12);
+        FieldPose behind = goalPose.getPointAlongPoseLine(-12);
 
-        webots.drawLine("GoalAhead", ahead.getPoint(), goalPoint.getPoint(), Color.kBlue, 60);
-        webots.drawLine("GoalBehind", behind.getPoint(), goalPoint.getPoint(), Color.kRed, 60);
+        webots.drawLine("GoalAhead", ahead.getPoint(), goalPose.getPoint(), Color.kBlue, 60);
+        webots.drawLine("GoalBehind", behind.getPoint(), goalPose.getPoint(), Color.kRed, 60);
 
         // Needs some kind of "terminal" lock, where once we are close enough the circle stays fixed and we just follow the route.
         if (circleCenter == null) {
-            circleCenter = goalPoint.getCenterOfCircleConnectingFieldPoseAndPoint(webots.getTruePosition());        
+            circleCenter = goalPose.getCenterOfCircleConnectingFieldPoseAndPoint(webots.getTruePosition());        
         }
         if (circleCenter != null) {
-            double distanceToGoal = webots.getTruePosition().getDistanceToPoint(goalPoint.getPoint());
+            double distanceToGoal = getAbsoluteDistanceToGoal();
             if (distanceToGoal < 30) {
                 // Terminal approach. Don't update circle
                 terminalApproach.set(true);
             } else {
                 terminalApproach.set(false);
                 // Still far away. Keep updating circle
-                circleCenter = goalPoint.getCenterOfCircleConnectingFieldPoseAndPoint(webots.getTruePosition());
+                circleCenter = goalPose.getCenterOfCircleConnectingFieldPoseAndPoint(webots.getTruePosition());
             }
         }
 
@@ -84,12 +93,10 @@ public class CircleDriveCommand extends BaseCommand {
         FieldPose truePose = new FieldPose(webots.getTruePosition(), pose.getCurrentHeading().clone());
         double distanceFromCenter = webots.getTruePosition().getDistanceToPoint(circleCenter);
 
-        boolean clockwise = goalPoint.getRelativeAngleToPoint(circleCenter) < 0;
+        boolean clockwise = goalPose.getRelativeAngleToPoint(circleCenter) < 0;
         double extraHeadingToFollowCircle = clockwise ? -90 : 90;
 
         webots.drawCircle("MainCircle", circleCenter, (float)(distanceFromCenter / BasePoseSubsystem.INCHES_IN_A_METER), Color.kGreen, 60);
-        
-
 
         //double circleAngle = webots.getTruePosition().clone().getAngle();
         double circleAngle = circleCenter.getAngleToPoint(truePose.getPoint());
@@ -98,8 +105,28 @@ public class CircleDriveCommand extends BaseCommand {
         //double distanceFromCenter = webots.getTruePosition().getDistanceToPoint(circleCenter);
         double spiralAdjust = 0;//(distanceFromCenter - 5*12)*spiralFactor.get();
         //spiralAdjust = MathUtils.constrainDouble(spiralAdjust, -spiralMax.get(), spiralMax.get());
+        double goalAngle = idealAngle + spiralAdjust;
 
-        double headingPower = headingModule.calculateHeadingPower(idealAngle + spiralAdjust);
-        drive.arcadeDrive(drivePower.get(), headingPower);
+        double headingError = truePose.getHeading().difference(goalAngle);
+        
+        // If the angular error is too large, then we should not even bother driving forward - that
+        // might mean you are driving in entirely the wrong direction. Instead, suppress forward motion
+        // and only rotate.
+        double forwardPower = drivePower.get();
+        if (Math.abs(headingError) > 90) {
+            forwardPower = 0;
+        }
+
+        double headingPower = headingModule.calculateHeadingPower(goalAngle);
+        drive.arcadeDrive(forwardPower, headingPower);
+    }
+
+    private double getAbsoluteDistanceToGoal() {
+         return webots.getTruePosition().getDistanceToPoint(goalPose.getPoint());
+    }
+
+    @Override
+    public boolean isFinished() {
+        return getAbsoluteDistanceToGoal() < terminatingProximity.get();
     }
 }

@@ -367,6 +367,120 @@
           }
         }
       }
+    },
+    {
+      "title": "Circle Drive",
+      "autoPopulate": false,
+      "autoPopulatePrefix": "",
+      "widgetPane": {
+        "gridSize": 128.0,
+        "showGrid": true,
+        "hgap": 16.0,
+        "vgap": 16.0,
+        "tiles": {
+          "3,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/CircleDriveCommand/DrivePower",
+              "_title": "SmartDashboard/CircleDriveCommand/DrivePower"
+            }
+          },
+          "4,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/CircleDriveCommand/SpiralFactor",
+              "_title": "SmartDashboard/CircleDriveCommand/SpiralFactor"
+            }
+          },
+          "5,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/CircleDriveCommand/SpiralMax",
+              "_title": "SmartDashboard/CircleDriveCommand/SpiralMax"
+            }
+          },
+          "6,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/CircleDriveCommand/Terminal Approach",
+              "_title": "SmartDashboard/CircleDriveCommand/Terminal Approach",
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "3,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/PoseSubsystem/CurrentHeading",
+              "_title": "SmartDashboard/PoseSubsystem/CurrentHeading"
+            }
+          },
+          "4,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Webots/Simulator Pose X",
+              "_title": "SmartDashboard/Webots/Simulator Pose X"
+            }
+          },
+          "5,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Webots/Simulator Pose Y",
+              "_title": "SmartDashboard/Webots/Simulator Pose Y"
+            }
+          },
+          "3,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/DriveSubsystem/RotationPID/P",
+              "_title": "SmartDashboard/DriveSubsystem/RotationPID/P"
+            }
+          },
+          "4,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/DriveSubsystem/RotationPID/D",
+              "_title": "SmartDashboard/DriveSubsystem/RotationPID/D"
+            }
+          }
+        }
+      }
     }
   ],
   "windowGeometry": {

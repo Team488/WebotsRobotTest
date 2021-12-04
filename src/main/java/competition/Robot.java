@@ -40,8 +40,8 @@ public class Robot extends BaseRobot {
         
         webots.setFieldPoseOffset(
             new FieldPose(
-                0*PoseSubsystem.INCHES_IN_A_METER, 
-                0*PoseSubsystem.INCHES_IN_A_METER, 
+                -2.33*PoseSubsystem.INCHES_IN_A_METER, 
+                -4.58*PoseSubsystem.INCHES_IN_A_METER,
                 BasePoseSubsystem.FACING_TOWARDS_DRIVERS
                 )
         );
