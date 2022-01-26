@@ -20,11 +20,10 @@ import xbot.common.subsystems.drive.BaseDriveSubsystem;
 public class DriveSubsystem extends BaseDriveSubsystem {
     private static Logger log = Logger.getLogger(DriveSubsystem.class);
 
-    public final XCANTalon leftLeader;
-    public final XCANTalon rightLeader;
-
-    public final XAnalogDistanceSensor distanceSensor;
-    public final XAnalogDistanceSensor distanceSensor2;
+    public final XCANTalon frontLeftWheel;
+    public final XCANTalon frontRightWheel;
+    public final XCANTalon backLeftWheel;
+    public final XCANTalon backRightWheel;
 
     int i;
     private final double simulatedEncoderFactor = 256.0 * 39.3701; //256 "ticks" per meter, and ~39 inches in a meter
@@ -33,23 +32,28 @@ public class DriveSubsystem extends BaseDriveSubsystem {
     public DriveSubsystem(CommonLibFactory factory, XPropertyManager propManager) {
         log.info("Creating DriveSubsystem");
 
-        this.leftLeader = factory
+        this.frontLeftWheel = factory
                 .createCANTalon(new CANTalonInfo(1, true, FeedbackDevice.CTRE_MagEncoder_Absolute, true, simulatedEncoderFactor));
-        this.rightLeader = factory
+        this.frontRightWheel = factory
                 .createCANTalon(new CANTalonInfo(2, true, FeedbackDevice.CTRE_MagEncoder_Absolute, true, simulatedEncoderFactor));
-
-        this.distanceSensor = factory.createAnalogDistanceSensor(1, VoltageMaps::sharp0A51SK, this.getPrefix());
-        this.distanceSensor2 = factory.createAnalogDistanceSensor(2, VoltageMaps::sharp0A51SK, this.getPrefix());
-
-        leftLeader.createTelemetryProperties(this.getPrefix(), "LeftLeader");
-        rightLeader.createTelemetryProperties(this.getPrefix(), "RightLeader");
+        this.backLeftWheel = factory
+                .createCANTalon(new CANTalonInfo(3, true, FeedbackDevice.CTRE_MagEncoder_Absolute, true, simulatedEncoderFactor));
+        this.backRightWheel = factory
+                .createCANTalon(new CANTalonInfo(4, true, FeedbackDevice.CTRE_MagEncoder_Absolute, true, simulatedEncoderFactor));
+        
+        frontLeftWheel.createTelemetryProperties(this.getPrefix(), "frontLeftWheel");
+        frontRightWheel.createTelemetryProperties(this.getPrefix(), "frontRightWheel");
+        backLeftWheel.createTelemetryProperties(this.getPrefix(), "backLeftWheel");
+        backRightWheel.createTelemetryProperties(this.getPrefix(), "backRightWheel");
 
         this.register();
     }
 
     public void tankDrive(double leftPower, double rightPower) {    
-        this.leftLeader.simpleSet(leftPower);
-        this.rightLeader.simpleSet(rightPower);
+        this.frontLeftWheel.simpleSet(leftPower);
+        this.backLeftWheel.simpleSet(leftPower);
+        this.frontRightWheel.simpleSet(rightPower);
+        this.backRightWheel.simpleSet(rightPower);
         /*
          * i++; if (i % 25 == 0) { System.out.println("LeftPower:" + leftPower);
          * System.out.println("RightPower:" + rightPower); }
@@ -76,8 +80,7 @@ public class DriveSubsystem extends BaseDriveSubsystem {
         double left = translate.y - rotate;
         double right = translate.y + rotate;
 
-        this.leftLeader.simpleSet(left);
-        this.rightLeader.simpleSet(right);
+        tankDrive(left, right);
     }
 
     @Override
@@ -97,7 +100,9 @@ public class DriveSubsystem extends BaseDriveSubsystem {
 
     @Override
     public void periodic() {
-        leftLeader.updateTelemetryProperties();
-        rightLeader.updateTelemetryProperties();
+        frontLeftWheel.updateTelemetryProperties();
+        frontRightWheel.updateTelemetryProperties();
+        backLeftWheel.updateTelemetryProperties();
+        backRightWheel.updateTelemetryProperties();
     }
 }
