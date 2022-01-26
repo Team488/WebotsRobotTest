@@ -29,12 +29,12 @@ public class PoseSubsystem extends BasePoseSubsystem {
 
     @Override
     protected double getLeftDriveDistance() {
-        return drive.leftLeader.getSelectedSensorPosition(0) * scalingFactorFromTicksToInches;
+        return drive.frontLeftWheel.getSelectedSensorPosition(0) * scalingFactorFromTicksToInches;
     }
 
     @Override
     protected double getRightDriveDistance() {
-        return drive.rightLeader.getSelectedSensorPosition(0) * scalingFactorFromTicksToInches;
+        return drive.frontRightWheel.getSelectedSensorPosition(0) * scalingFactorFromTicksToInches;
     }
 
 }

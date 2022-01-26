@@ -12,7 +12,7 @@ public class DriveSubsystemTest extends BaseWPITest {
         DriveSubsystem driveSubsystem = this.injector.getInstance(DriveSubsystem.class);
         driveSubsystem.tankDrive(1, 1);
 
-        assertEquals(1, driveSubsystem.leftLeader.getMotorOutputPercent(), 0.001);
-        assertEquals(1, driveSubsystem.rightLeader.getMotorOutputPercent(), 0.001);
+        assertEquals(1, driveSubsystem.frontLeftWheel.getMotorOutputPercent(), 0.001);
+        assertEquals(1, driveSubsystem.frontRightWheel.getMotorOutputPercent(), 0.001);
     }
 }
